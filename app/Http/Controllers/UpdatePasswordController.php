@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\UpdatePassword;
 use Illuminate\Http\Request;
+use App\Models\User;
+
 use Carbon\Carbon;
 class UpdatePasswordController extends Controller
 {
@@ -78,9 +80,15 @@ class UpdatePasswordController extends Controller
      * @param  \App\Models\UpdatePassword  $updatePassword
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UpdatePassword $updatePassword)
+    public function update($id,Request $request)
     {
-        //
+        
+            $data=User::find($id);
+            $data->password=$request->password;
+            $data->save();
+            return json_encode("exito");
+        
+
     }
 
     /**

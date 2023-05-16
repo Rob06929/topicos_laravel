@@ -39,6 +39,9 @@ Route::get('/actions/get-user/{name}', [UsuarioController::class, 'get_data']);
 Route::get('/actions/get-user/{id}', [UsuarioController::class, 'get_data_id']);
 
 Route::post('/actions/passwordUpdate', [UpdatePasswordController::class, 'index']);
+Route::post('/actions/passwordChange/{id}', [UpdatePasswordController::class, 'update']);
+
+
 Route::post('/actions/saveUser', [UsuarioController::class, 'apiSave']);
 Route::post('/actions/loginUser', [UsuarioController::class, 'apiLogin']);
 
