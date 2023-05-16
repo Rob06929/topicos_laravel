@@ -16,7 +16,7 @@ class UpdatePassword extends Seeder
     {
         DB::table('update_passwords')->insert([
             'password'=>'asdfds',
-            'fecha' => '2023/02/05',
+            'fecha' => '2023/05/10',
             'id_usuario' => '1',
             'periodoUpdate'=> 30
         ]);

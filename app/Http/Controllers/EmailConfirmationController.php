@@ -87,15 +87,16 @@ class EmailConfirmationController extends Controller
 
     public function confirmationEmail($uid,$id)
     {
-        
-            $data=User::find($id)->first();
+            
+            $data=User::find($id);
+            echo $data;
             $data1=EmailConfirmation::where('id_usuario',$data->id)->first();
             //$data1->fecha_hora=Carbon::now();
             $fecha_actual=Carbon::now(new \DateTimeZone('America/La_Paz'));
             $fecha_registro=Carbon::parse($data1->fecha_hora);
             $cantidadMinutos = $fecha_actual->diffInMinutes($fecha_registro);
-            echo $cantidadMinutos;
-            if($cantidadMinutos<10){
+            echo $cantidadMinutos." ".$fecha_actual. " ". $fecha_registro;
+            if($cantidadMinutos<10000){
                 if ($data->estado_confirmacion=="false") {
                     return view('mail.view_confirmacion',["id_usuario"=>$id,"uid"=>$uid]);
                 }else{
