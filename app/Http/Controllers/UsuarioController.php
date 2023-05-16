@@ -126,6 +126,27 @@ class UsuarioController extends Controller
         return json_decode($data);
     }
 
+    public function get_data_id($id)
+    {
+        $data=User::find($id);
+        return json_decode($data);
+    }
+
+    public function apiLogin(Request $request)
+    {
+        $data=User::where("name",$request->name)->first();
+        if ($data->password==$request->contraseña) {
+            return json_encode("exito");
+        }else{
+            return json_encode("fail");
+        }
+        
+    }
+
+
+
+    
+
     public $data,$data1;
     public function apiSave(Request $request)
     {
@@ -140,7 +161,7 @@ class UsuarioController extends Controller
         $data->name=$request->nombre_usuario;
         $data->email=$request->email;
         $data->estado_confirmacion="false";
-        $data->password=bcrypt($request->password);
+        $data->password=$request->password;
         $data->url_foto=$request->url_foto;
         $data->id_persona=$data1->id;
         $data->save();
