@@ -22,25 +22,25 @@ class UsuarioController extends Controller
 
     public function save(Request $request)
     {
-        
-        try {
-            $data_persona=new Persona();
 
-            $data_persona->nombre=$request->nombre;
-            $data_persona->telefono=$request->telefono;
-            $data_persona->direccion=$request->direccion;
-            $data_persona->ci=$request->ci;
+        try {
+            $data_persona = new Persona();
+
+            $data_persona->nombre = $request->nombre;
+            $data_persona->telefono = $request->telefono;
+            $data_persona->direccion = $request->direccion;
+            $data_persona->ci = $request->ci;
             $data_persona->save();
 
-            $data_usaurio=$request->user_name;
-            $data_usaurio=$request->email;
-            $data_usaurio=bcrypt($request->password);
-            $data_usaurio->estado_confirmacion="false";
-            $data_usaurio->url_foto=$request->url_foto;
-            $data_usaurio->id_persona=$data_persona->id;
-            return json_encode("200");    
+            $data_usaurio = $request->user_name;
+            $data_usaurio = $request->email;
+            $data_usaurio = bcrypt($request->password);
+            $data_usaurio->estado_confirmacion = "false";
+            $data_usaurio->url_foto = $request->url_foto;
+            $data_usaurio->id_persona = $data_persona->id;
+            return json_encode("200");
         } catch (\Throwable $th) {
-            return json_encode("500");    
+            return json_encode("500");
         }
     }
     /**
@@ -82,7 +82,7 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        $data=User::where("id",$id)->first();
+        $data = User::where("id", $id)->first();
         return json_decode($data);
     }
 
@@ -122,70 +122,80 @@ class UsuarioController extends Controller
 
     public function get_data($name)
     {
-        $data=User::where("name",$name)->first();
+        $data = User::where("name", $name)->first();
         return json_decode($data);
     }
 
     public function get_data_id($id)
     {
-        $data=User::find($id);
+        $data = User::find($id);
         return json_decode($data);
     }
 
     public function apiLogin(Request $request)
     {
-        $data=User::where("name",$request->name)->first();
-        if ($data->password==$request->contraseña) {
-            return json_encode("exito");
-        }else{
-            return json_encode("fail");
+        // return $request;
+        $msg=[
+            'resp' => 1,
+            'id' => 0
+        ];
+        $data = User::where("name", $request->name)->first();
+        if ($data != null) {
+            $msg['id'] = $data->id;
+            return json_encode($msg);
+            // if ($data->password == $request->contraseña) {
+            //     return json_encode("exito");
+            // } else {
+            //     return json_encode("fail");
+            // }
         }
-        
+        $msg['resp'] = 0;
+        return json_encode($msg);
     }
 
 
 
-    
 
-    public $data,$data1;
+
+    public $data, $data1;
     public function apiSave(Request $request)
     {
-        $data1=New Persona;
-        $data1->nombre=$request->nombre;
-        $data1->telefono=$request->telefono;
-        $data1->ci=$request->ci;
-        $data1->direccion=$request->direccion;
+        $data1 = new Persona;
+        $data1->nombre = $request->nombre;
+        $data1->telefono = $request->telefono;
+        $data1->ci = $request->ci;
+        $data1->direccion = $request->direccion;
         $data1->save();
 
-        $data=new User;
-        $data->name=$request->nombre_usuario;
-        $data->email=$request->email;
-        $data->estado_confirmacion="false";
-        $data->password=$request->password;
-        $data->url_foto=$request->url_foto;
-        $data->id_persona=$data1->id;
+        $data = new User;
+        $data->name = $request->nombre_usuario;
+        $data->email = $request->email;
+        $data->estado_confirmacion = "false";
+        $data->password = $request->password;
+        $data->url_foto = $request->url_foto;
+        $data->id_persona = $data1->id;
         $data->save();
 
-        $data2=new EmailConfirmation;
-        $data2->uid=$this->generateRandomString(6);
-        $data2->fecha_hora=Carbon::now(new \DateTimeZone('America/La_Paz'));
-        $data2->id_usuario=$data->id;
+        $data2 = new EmailConfirmation;
+        $data2->uid = $this->generateRandomString(6);
+        $data2->fecha_hora = Carbon::now(new \DateTimeZone('America/La_Paz'));
+        $data2->id_usuario = $data->id;
         $data2->save();
 
-        $data3 = array('nombre'=>$data1->nombre,'uid'=>$data2->uid,'id'=>$data->id,);
-        $to_email=$data->email;
-        $to_name=$data1->nombre;
-        Mail::send('mail.confirmacion', $data3, function($message) use($to_email,$to_name) {
+        $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
+        $to_email = $data->email;
+        $to_name = $data1->nombre;
+        Mail::send('mail.confirmacion', $data3, function ($message) use ($to_email, $to_name) {
 
-        $message->to($to_email ,$to_name)->subject
-           ('ALCALDIA - Confirmación de correo');
-           $message->from('robfernandez06929@gmail.com','Alcaldia');
+            $message->to($to_email, $to_name)->subject('ALCALDIA - Confirmación de correo');
+            $message->from('robfernandez06929@gmail.com', 'Alcaldia');
         });
 
-        return json_encode(["response"=>"exito"]);
+        return json_encode(["response" => "exito"]);
     }
 
-    function generateRandomString($length = 10) {
+    function generateRandomString($length = 10)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
