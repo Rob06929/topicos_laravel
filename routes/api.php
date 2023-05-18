@@ -38,6 +38,10 @@ Route::get('send_correo',function(){
 Route::get('/actions/get-user/{name}', [UsuarioController::class, 'get_data']);
 Route::get('/actions/get-user-id/{id}', [UsuarioController::class, 'get_data_id']);
 
+Route::get('/actions/getAllDataUser/{id}', [UsuarioController::class, 'show']);
+Route::post('/actions/updateUser/{id}', [UsuarioController::class, 'update']);
+
+
 Route::post('/actions/passwordUpdate', [UpdatePasswordController::class, 'index']);
 Route::post('/actions/passwordChange/{id}', [UpdatePasswordController::class, 'update']);
 
