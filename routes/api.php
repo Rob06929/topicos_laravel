@@ -36,7 +36,7 @@ Route::get('send_correo',function(){
 })->name("send_correo");
 
 Route::get('/actions/get-user/{name}', [UsuarioController::class, 'get_data']);
-Route::get('/actions/get-user/{id}', [UsuarioController::class, 'get_data_id']);
+Route::get('/actions/get-user-id/{id}', [UsuarioController::class, 'get_data_id']);
 
 Route::post('/actions/passwordUpdate', [UpdatePasswordController::class, 'index']);
 Route::post('/actions/passwordChange/{id}', [UpdatePasswordController::class, 'update']);

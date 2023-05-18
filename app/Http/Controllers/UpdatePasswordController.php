@@ -82,13 +82,24 @@ class UpdatePasswordController extends Controller
      */
     public function update($id,Request $request)
     {
-        
             $data=User::find($id);
+            $contrasenaAnterior = $data->password;
+            $fechaActual = date("Y-m-d H:i:s");
+            $updatePassword=UpdatePassword::where("id_usuario",$data->id)->first();
+            $updatePassword->fecha = $fechaActual;
+            $updatePassword->password = $contrasenaAnterior;
+            // return $date=[
+            //     'fecha'=> $fechaActual,
+            //     'user'=> $data,
+            //     'updatePassword'=> $updatePassword,
+            // ];
+            // $updatePassword->save(); // por alguna razon me da error aca, no deja guardar
+            // return 'todo bien';
+
             $data->password=$request->password;
             $data->save();
+    
             return json_encode("exito");
-        
-
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
+use App\Models\Usuario;
 use Carbon\Carbon;
 
 
@@ -149,7 +150,7 @@ class UsuarioController extends Controller
             //     return json_encode("fail");
             // }
         }
-        $msg['resp'] = 0;
+        $msg['resp'] = '0';
         return json_encode($msg);
     }
 
@@ -160,6 +161,7 @@ class UsuarioController extends Controller
     public $data, $data1;
     public function apiSave(Request $request)
     {
+        // return $data1->id;
         $data1 = new Persona;
         $data1->nombre = $request->nombre;
         $data1->telefono = $request->telefono;
@@ -181,7 +183,7 @@ class UsuarioController extends Controller
         $data2->fecha_hora = Carbon::now(new \DateTimeZone('America/La_Paz'));
         $data2->id_usuario = $data->id;
         $data2->save();
-
+        // return $request;
         $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
         $to_email = $data->email;
         $to_name = $data1->nombre;
@@ -191,7 +193,7 @@ class UsuarioController extends Controller
             $message->from('robfernandez06929@gmail.com', 'Alcaldia');
         });
 
-        return json_encode(["response" => "exito"]);
+        return json_encode(["id" =>  $data->id]);
     }
 
     function generateRandomString($length = 10)
