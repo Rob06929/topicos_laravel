@@ -7,6 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="http://localhost:8000/api/actions/confirmation_register/{{$uid}}/{{$id_usuario}}">Confirmar el correo</a>
+    <div class="flex justify-center items-center h-screen">
+        <button class="py-3 px-6 bg-blue-500 text-white font-semibold rounded-lg shadow-md">
+            <a href="{{ config('app.url') }}/api/actions/confirmation_register/{{$uid}}/{{$id_usuario}}">Confirmar el correo</a>
+        </button>
+    </div>
+    
 </body>
 </html>

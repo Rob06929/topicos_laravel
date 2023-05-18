@@ -48,5 +48,7 @@ Route::post('/actions/loginUser', [UsuarioController::class, 'apiLogin']);
 
 Route::get('/actions/confirmation_email/{uid}/{id}', [EmailConfirmationController::class, 'confirmationEmail']);
 Route::get('/actions/confirmation_register/{uid}/{id}', [EmailConfirmationController::class, 'confirmationregister']);
+Route::get('/actions/resend_confirmation_email/{id}', [EmailConfirmationController::class, 'resendConfirmationEmail']);
+
 
 
