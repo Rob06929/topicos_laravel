@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Persona;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\EmailConfirmation;
 use Illuminate\Http\Request;
@@ -123,5 +125,41 @@ class EmailConfirmationController extends Controller
             
         return view('mail.ya_confirmado',["email"=>$data->email]);
 
+    }
+
+    public function resendConfirmationEmail($id)
+    {
+
+        $data = User::find($id);
+
+        $data1 =Persona::find($data->id_persona);
+
+        $data2 = new EmailConfirmation;
+        $data2->uid = $this->generateRandomString(6);
+        $data2->fecha_hora = Carbon::now(new \DateTimeZone('America/La_Paz'));
+        $data2->id_usuario = $data->id;
+        $data2->save();
+        // return $request;
+        $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
+        $to_email = $data->email;
+        $to_name = $data1->nombre;
+        Mail::send('mail.confirmacion', $data3, function ($message) use ($to_email, $to_name) {
+
+            $message->to($to_email, $to_name)->subject('ALCALDIA - Confirmación de correo');
+            $message->from('robfernandez06929@gmail.com', 'Alcaldia');
+        });
+        return json_encode("exito");
+    }
+
+    function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        $randomString .= "z";
+        return $randomString;
     }
 }
