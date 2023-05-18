@@ -8,6 +8,8 @@ use App\Models\Vecino;
 use App\Models\EmailConfirmation;
 use App\Models\User;
 use App\Models\Persona;
+use App\Models\FailsPassword;
+use App\Http\Controllers\FailsPasswordController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
 use Carbon\Carbon;
@@ -152,16 +154,28 @@ class UsuarioController extends Controller
             'id' => 0
         ];
         $data = User::where("name", $request->name)->first();
-        if ($data != null) {
-             if ($data->password == $request->contraseña) {
-                $msg['id'] = $data->id;
-                return json_encode($msg);
-
-             } else {
-                $msg['resp'] = 0;
-                return json_encode($msg);
-             }
+        $ref=new FailsPasswordController();
+        $fail=$ref->show($data->id);
+        if ($fail->intentos<3) {
+            if ($data != null) {
+                if ($data->password == $request->contraseña) {
+                   $msg['id'] = $data->id;
+                   return json_encode($msg);
+   
+                } else {
+                    $resp=$ref->store($data->id);
+                    $msg['resp'] = 0;
+                    if ($resp=="block") {
+                        return "block";
+                    }
+                    return json_encode($msg);
+                   
+                }
+           }
+        }else{
+            return json_encode("block");
         }
+
        
     }
 
@@ -194,14 +208,19 @@ class UsuarioController extends Controller
         $data2->id_usuario = $data->id;
         $data2->save();
 
-        $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
+        $data4=new FailsPassword();
+        $data4->intentos=0;
+        $data4->id_usuario=$data->id;
+        $data4->save();
+
+       /* $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
         $to_email = $data->email;
         $to_name = $data1->nombre;
         Mail::send('mail.confirmacion', $data3, function ($message) use ($to_email, $to_name) {
 
             $message->to($to_email, $to_name)->subject('ALCALDIA - Confirmación de correo');
             $message->from('robfernandez06929@gmail.com', 'Alcaldia');
-        });
+        });*/
 
         return json_encode(["response" => "exito"]);
     }
