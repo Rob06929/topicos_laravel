@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
+use App\Models\UpdatePassword;
 use App\Models\Usuario;
 use Carbon\Carbon;
 
@@ -206,5 +207,11 @@ class UsuarioController extends Controller
         }
         $randomString .= "z";
         return $randomString;
+    }
+    public function get_auth_email(Request $request)
+    {
+        $data = User::where("id", $request->id)->first();
+        // dd($data);
+        return ($data->estado_confirmacion);
     }
 }

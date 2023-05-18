@@ -44,7 +44,7 @@ Route::post('/actions/passwordChange/{id}', [UpdatePasswordController::class, 'u
 
 Route::post('/actions/saveUser', [UsuarioController::class, 'apiSave']);
 Route::post('/actions/loginUser', [UsuarioController::class, 'apiLogin']);
-
+Route::post('/actions/get_auth_email', [UsuarioController::class, 'get_auth_email']);
 
 Route::get('/actions/confirmation_email/{uid}/{id}', [EmailConfirmationController::class, 'confirmationEmail']);
 Route::get('/actions/confirmation_register/{uid}/{id}', [EmailConfirmationController::class, 'confirmationregister']);
