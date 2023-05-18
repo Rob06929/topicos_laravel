@@ -1,17 +1,17 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Formulario - Tailwind CSS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="flex justify-center items-center h-screen">
-        <button class="py-3 px-6 bg-blue-500 text-white font-semibold rounded-lg shadow-md">
-            <a href="{{ config('app.url') }}/api/actions/confirmation_register/{{$uid}}/{{$id_usuario}}">Confirmar el correo</a>
-        </button>
+<body class="flex flex-col items-center justify-center h-screen">
+    <div class=" p-6 bg-white rounded shadow-lg my-4">
+        <h2 class="text-xl font-semibold mb-4">Confirmacion de correo electronico</h2>    
+        <button type="submit" class="p-3 bg-blue-500 text-white font-semibold py-2 rounded"><a href="{{ config('app.url') }}/api/actions/confirmation_register/{{$uid}}/{{$id_usuario}}">Confirmar</a></button>
     </div>
-    
 </body>
 </html>

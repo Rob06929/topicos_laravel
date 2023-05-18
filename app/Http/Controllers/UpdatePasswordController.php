@@ -3,12 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\UpdatePassword;
+use App\Models\Variable;
+
 use Illuminate\Http\Request;
 use App\Models\User;
+use Config;
 
 use Carbon\Carbon;
 class UpdatePasswordController extends Controller
 {
+
+    public static function getPeriodoUpdate()
+    {
+        $data=Variable::find(1);
+        return $data->periodo_password;
+    }   
+
+    public static function setPeriodoUpdate( Request $request)
+    {
+        $data=Variable::find(1);
+        $data->periodo_password=$request->valor;
+        $data->save();
+        return redirect()->route('form');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +34,8 @@ class UpdatePasswordController extends Controller
      */
     public function index(Request $request)
     {
+        $data1=Variable::find(1);
+        
         $data=UpdatePassword::where("id_usuario",$request->id_usuario)->first();
         
         
@@ -24,7 +44,8 @@ class UpdatePasswordController extends Controller
         if ($data) {
             $fechaAntigua  = Carbon::parse($data->fecha);
             $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
-            if ($data->periodoUpdate<=$cantidadDias) {
+            echo $cantidadDias;
+            if ($data1->periodo_password<=$cantidadDias) {
                 return json_encode(["excedeDias"=>"true"]);
             }else{
                 return json_encode(["excedeDias"=>"false"]);
@@ -35,7 +56,7 @@ class UpdatePasswordController extends Controller
             $fechaAntigua  = Carbon::parse($data->create_at);
             $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
 
-            if (30<=$cantidadDias) {
+            if ($data1->periodo_password<=$cantidadDias) {
                 return json_encode(["excedeDias"=>"true"]);
             }else{
                 return json_encode(["excedeDias"=>"false"]);
@@ -76,7 +97,7 @@ class UpdatePasswordController extends Controller
      */
     public function show(UpdatePassword $updatePassword)
     {
-        //
+        return $periodo_update;
     }
 
     /**

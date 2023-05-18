@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(Usuario::class);
         $this->call(EmailConfirmation::class);
         $this->call(UpdatePassword::class);
+        $this->call(VariableSeeder::class);
+
 
         
     }

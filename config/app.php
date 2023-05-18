@@ -2,6 +2,8 @@
 
 return [
 
+    'periodo_update'=>env('PERIODO_UPDATE','30'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

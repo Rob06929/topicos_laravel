@@ -157,10 +157,12 @@ class UsuarioController extends Controller
         ];
         $data = User::where("name", $request->name)->first();
         $ref=new FailsPasswordController();
+        $ref->update($data->id);
         $fail=$ref->show($data->id);
         if ($fail->intentos<3) {
             if ($data != null) {
                 if ($data->password == $request->contraseña) {
+                    $ref->reset($data->id);
                    $msg['id'] = $data->id;
                    return json_encode($msg);
    
@@ -168,7 +170,7 @@ class UsuarioController extends Controller
                     $resp=$ref->store($data->id);
                     $msg['resp'] = 0;
                     if ($resp=="block") {
-                        return "block";
+                        return json_encode("block");
                     }
                     return json_encode($msg);
                    
@@ -215,14 +217,14 @@ class UsuarioController extends Controller
         $data4->id_usuario=$data->id;
         $data4->save();
 
-       /* $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
+        $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
         $to_email = $data->email;
         $to_name = $data1->nombre;
         Mail::send('mail.confirmacion', $data3, function ($message) use ($to_email, $to_name) {
 
             $message->to($to_email, $to_name)->subject('ALCALDIA - Confirmación de correo');
             $message->from('robfernandez06929@gmail.com', 'Alcaldia');
-        });*/
+        });
 
         return json_encode(["response" => "exito"]);
     }
@@ -244,4 +246,7 @@ class UsuarioController extends Controller
         // dd($data);
         return ($data->estado_confirmacion);
     }
+
+
+    
 }

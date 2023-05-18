@@ -5,12 +5,29 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Variable;
+
 
 use App\Models\EmailConfirmation;
 use Illuminate\Http\Request;
 
 class EmailConfirmationController extends Controller
 {
+
+    public static function getPeriodoConfirmation()
+    {
+        $data=Variable::find(1);
+        return $data->periodo_confirmacion;
+    }   
+
+    public static function setPeriodoConfirmation(Request $request)
+    {
+        $data=Variable::find(1);
+        $data->periodo_confirmacion=$request->valor;
+        $data->save();
+        return redirect()->route('form');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -89,6 +106,7 @@ class EmailConfirmationController extends Controller
 
     public function confirmationEmail($uid,$id)
     {
+            $data2=Variable::find(1);
             
             $data=User::find($id);
             //echo $data;
@@ -98,7 +116,7 @@ class EmailConfirmationController extends Controller
             //$fecha_registro=Carbon::parse($data1->fecha_hora);
             $cantidadMinutos = $fecha_actual->diffInMinutes($data1->fecha_hora);
             //echo $cantidadMinutos." ".$fecha_actual. " ".$data1->fecha_hora;
-            if($cantidadMinutos<30){
+            if($cantidadMinutos<$data2->periodo_confirmacion){
                 if ($data->estado_confirmacion=="false") {
                     return view('mail.view_confirmacion',["id_usuario"=>$id,"uid"=>$uid]);
                 }else{
@@ -116,7 +134,7 @@ class EmailConfirmationController extends Controller
 
     public function confirmationRegister($uid,$id)  
     {
-        $data=User::find($id)->first();
+        $data=User::find($id);
         $data->estado_confirmacion="true";
         $data->save();
 

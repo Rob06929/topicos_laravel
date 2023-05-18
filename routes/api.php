@@ -45,6 +45,13 @@ Route::post('/actions/updateUser/{id}', [UsuarioController::class, 'update']);
 Route::post('/actions/passwordUpdate', [UpdatePasswordController::class, 'index']);
 Route::post('/actions/passwordChange/{id}', [UpdatePasswordController::class, 'update']);
 
+Route::post('/actions/setPeriodo', [UpdatePasswordController::class, 'setPeriodoUpdate'])->name('setPeriodo');
+Route::get('/actions/getPeriodo', [UpdatePasswordController::class, 'getPeriodoUpdate']);
+
+Route::post('/actions/setConfirmation', [EmailConfirmationController::class, 'setPeriodoConfirmation'])->name('setConfirmation');
+Route::get('/actions/getConfirmation', [EmailConfirmationController::class, 'getPeriodoConfirmation']);
+
+
 
 Route::post('/actions/saveUser', [UsuarioController::class, 'apiSave']);
 Route::post('/actions/loginUser', [UsuarioController::class, 'apiLogin']);

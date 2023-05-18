@@ -42,9 +42,11 @@ class FailsPasswordController extends Controller
             $data->fecha_ultimo_intento=Carbon::now(new \DateTimeZone('America/La_Paz'));
             if ($data->intentos>=3) {
                 $data->fecha_bloqueo=Carbon::now(new \DateTimeZone('America/La_Paz'));    
+                $data->save();
                 return "block";
             }
             $data->save();
+            
         return "ready";
     }
 
@@ -78,9 +80,22 @@ class FailsPasswordController extends Controller
      * @param  \App\Models\FailsPassword  $failsPassword
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FailsPassword $failsPassword)
+    public function update($id)
     {
-        //
+        $data=FailsPassword::where("id_usuario",$id)->first();
+        if ($data->fecha_bloqueo!=null) {
+            $fecha_actual=Carbon::now(new \DateTimeZone('America/La_Paz'));
+            $cantidadMinutos = $fecha_actual->diffInMinutes($data->fecha_bloqueo);
+            if($cantidadMinutos>=5){
+                $data->intentos=0;
+                $data->fecha_ultimo_intento=null;
+                $data->fecha_bloqueo=null;
+                $data->save();
+            }
+        }
+        
+        
+       
     }
 
     /**
@@ -92,5 +107,14 @@ class FailsPasswordController extends Controller
     public function destroy(FailsPassword $failsPassword)
     {
         //
+    }
+
+    public function reset($id)
+    {
+        $data=FailsPassword::where("id_usuario",$id)->first();
+        $data->intentos=0;
+        $data->fecha_ultimo_intento=null;
+        $data->fecha_bloqueo=null;
+        $data->save();
     }
 }
