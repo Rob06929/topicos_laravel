@@ -19,6 +19,8 @@ class CreateUpdatePasswordsTable extends Migration
             $table->dateTime('fecha');
             $table->integer('id_usuario');
             $table->integer('periodoUpdate');
+            $table->timestamps();
+
         });
     }
 

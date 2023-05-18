@@ -18,15 +18,32 @@ class UpdatePasswordController extends Controller
     {
         $data=UpdatePassword::where("id_usuario",$request->id_usuario)->first();
         
-        $fechaAntigua  = Carbon::parse($data->fecha);
+        
         $fechaReciente = Carbon::parse($request->fecha);
 
-        $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
-        if ($data->periodoUpdate<=$cantidadDias) {
-            return json_encode(["excedeDias"=>"true"]);
+        if ($data) {
+            $fechaAntigua  = Carbon::parse($data->fecha);
+            $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
+            if ($data->periodoUpdate<=$cantidadDias) {
+                return json_encode(["excedeDias"=>"true"]);
+            }else{
+                return json_encode(["excedeDias"=>"false"]);
+            }    
         }else{
-            return json_encode(["excedeDias"=>"false"]);
+            $data=User::find($request->id_usuario);
+
+            $fechaAntigua  = Carbon::parse($data->create_at);
+            $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
+
+            if (30<=$cantidadDias) {
+                return json_encode(["excedeDias"=>"true"]);
+            }else{
+                return json_encode(["excedeDias"=>"false"]);
+            }    
+
         }
+
+        
         
     }
 
@@ -84,10 +101,17 @@ class UpdatePasswordController extends Controller
     {
             $data=User::find($id);
             $contrasenaAnterior = $data->password;
-            $fechaActual = date("Y-m-d H:i:s");
-            $updatePassword=UpdatePassword::where("id_usuario",$data->id)->first();
+            $fechaActual = Carbon::now(new \DateTimeZone('America/La_Paz'));
+            $updatePassword=new UpdatePassword();
+            
+            //UpdatePassword::where("id_usuario",$data->id)->first();
+            echo $updatePassword;
+
             $updatePassword->fecha = $fechaActual;
             $updatePassword->password = $contrasenaAnterior;
+            $updatePassword->id_usuario=$id;
+            $updatePassword->periodoUpdate=30;
+            $updatePassword->save();
             // return $date=[
             //     'fecha'=> $fechaActual,
             //     'user'=> $data,
