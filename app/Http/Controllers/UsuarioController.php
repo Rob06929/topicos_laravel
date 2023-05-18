@@ -82,8 +82,11 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        $data = User::where("id", $id)->first();
-        return json_decode($data);
+        
+        $data = User::find($id);
+        $data1= Persona::find($data->id_persona);
+
+        return json_encode(["usuario"=>$data->name,"telefono"=>$data1->telefono,"ci"=>$data1->ci,"direccion"=>$data1->direccion,"email"=>$data->email,"nombre"=>$data1->nombre]);
     }
 
     /**
@@ -104,9 +107,18 @@ class UsuarioController extends Controller
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request, $id)
     {
-        //
+        $data =User::find($id);
+        $data->name = $request->nombre_usuario;
+        //$data->email = $request->email;
+        $data->save();
+
+        $data1 =Persona::find($data->id_persona);
+        $data1->telefono = $request->telefono;
+        $data1->direccion = $request->direccion;
+        $data1->save();
+        return json_encode("exito");
     }
 
     /**
@@ -141,16 +153,16 @@ class UsuarioController extends Controller
         ];
         $data = User::where("name", $request->name)->first();
         if ($data != null) {
-            $msg['id'] = $data->id;
-            return json_encode($msg);
-            // if ($data->password == $request->contraseña) {
-            //     return json_encode("exito");
-            // } else {
-            //     return json_encode("fail");
-            // }
+             if ($data->password == $request->contraseña) {
+                $msg['id'] = $data->id;
+                return json_encode($msg);
+
+             } else {
+                $msg['resp'] = 0;
+                return json_encode($msg);
+             }
         }
-        $msg['resp'] = 0;
-        return json_encode($msg);
+       
     }
 
 
