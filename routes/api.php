@@ -7,6 +7,10 @@ use App\Mail\SendMail;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UpdatePasswordController;
 use App\Http\Controllers\EmailConfirmationController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ApiImageController;
+use App\Http\Controllers\DenunciaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +64,26 @@ Route::post('/actions/get_auth_email', [UsuarioController::class, 'get_auth_emai
 Route::get('/actions/confirmation_email/{uid}/{id}', [EmailConfirmationController::class, 'confirmationEmail']);
 Route::get('/actions/confirmation_register/{uid}/{id}', [EmailConfirmationController::class, 'confirmationregister']);
 Route::get('/actions/resend_confirmation_email/{id}', [EmailConfirmationController::class, 'resendConfirmationEmail']);
+
+
+
+Route::post('/actions/chat', [ChatController::class, 'chat']);
+
+Route::get('/actions/analizeImg', [ApiImageController::class, 'analizeImage']);
+Route::post('/actions/analizeTitulo', [ChatController::class, 'verificacionTitulo']);
+
+Route::post('/actions/moderacionContenido', [DenunciaController::class, 'moderacionContenido']);
+
+Route::get('/actions/getTipoEstado', [DenunciaController::class, 'getTipoEstado']);
+
+Route::get('/actions/getDenuncias', [DenunciaController::class, 'index']);
+
+Route::post('/actions/getFiltroDenuncias', [DenunciaController::class, 'getFiltro']);
+
+Route::post('/actions/compararContenido', [DenunciaController::class, 'compararContenidoImagen']);
+
+
+
 
 
 
