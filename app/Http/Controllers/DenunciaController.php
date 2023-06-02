@@ -15,7 +15,7 @@ class DenunciaController extends Controller
     public function index()
     {
         //Denuncia::where("id_usuario",$id)->get();
-        return json_encode(Denuncia::all());
+        return json_encode(Denuncia::all()->join("denuncia_estados","denuncia_estados.id","=","denuncia")->select("nombre")->get());
     }
 
     /**
@@ -170,7 +170,7 @@ class DenunciaController extends Controller
     public function getTipoEstado()
     {
         $tipo=new DenunciaTipoController;
-        $estado=new DenunciaTipoController;
+        $estado=new DenunciaEstadoController;
 
         $arr=array();
         $arr['tipo']=$tipo->index();
