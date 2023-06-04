@@ -15,7 +15,11 @@ class DenunciaController extends Controller
     public function index()
     {
         //Denuncia::where("id_usuario",$id)->get();
-        return json_encode(Denuncia::all()->join("denuncia_estados","denuncia_estados.id","=","denuncia")->select("nombre")->get());
+        // return json_encode(Denuncia::all()->join("denuncia_estados","denuncia_estados.id","=","denuncia")->select("nombre")->get());
+        return Denuncia::select('*', 'denuncia_estados.nombre as nombre_estado')
+                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")->get();
+        // return json_encode(Denuncia::select('denuncia.*', 'denuncia_estados.nombre')
+        //                     ->join("denuncia_estados","denuncia_estados.id","=","denuncia.estado_id"));
     }
 
     /**
