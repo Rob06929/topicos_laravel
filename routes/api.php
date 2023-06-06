@@ -70,7 +70,7 @@ Route::get('/actions/resend_confirmation_email/{id}', [EmailConfirmationControll
 Route::post('/actions/chat', [ChatController::class, 'chat']);
 
 Route::get('/actions/analizeImg', [ApiImageController::class, 'analizeImage']);
-Route::post('/actions/analizeTitulo', [ChatController::class, 'verificacionTitulo']);
+Route::post('/actions/analizeTitulo', [ChatController::class, 'verificacionTituloAPI']);
 
 Route::post('/actions/moderacionContenido', [DenunciaController::class, 'moderacionContenido']);
 
@@ -82,6 +82,7 @@ Route::post('/actions/getFiltroDenuncias', [DenunciaController::class, 'getFiltr
 
 Route::post('/actions/compararContenido', [DenunciaController::class, 'compararContenidoImagen']);
 
+Route::post('/actions/guardarDenuncia', [DenunciaController::class, 'store']);
 
 
 

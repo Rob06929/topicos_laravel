@@ -56,7 +56,7 @@ class ApiImageController extends Controller
         curl_close($ch);        
         $result = json_decode($response, true);
         if(!isset($result['status'])) {
-            $result = $response;            
+            $result = $response['caption_GPTS'];            
         }
         return $result;
     }

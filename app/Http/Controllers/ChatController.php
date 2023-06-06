@@ -18,7 +18,7 @@ class ChatController extends Controller
                   ->post("https://api.openai.com/v1/chat/completions", [
                     "model" => "gpt-3.5-turbo",
                     'messages' => [
-                        ['role' => 'system', 'content' => 'si el mensaje contiene insultos responde solo verdadero caso contrario responde falso '],
+                        ['role' => 'system', 'content' => 'si el mensaje contiene insultos responde estrictamente solo "true" caso contrario responde "falso" '],
                         [
                            "role" => "user",
                            "content" =>'"'.$message.'"',
@@ -47,10 +47,10 @@ class ChatController extends Controller
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
         'messages' => [
-            ['role' => 'system', 'content' =>'el siguiente mensaje esta relacionado con las siguientes categorias: '.$request->categories.' .Caso contrario devuelve falso'],
+            ['role' => 'system', 'content' =>'eres un bot que analiza descripciones de denuncias en una ciudad y determina si los siguientes mensajes entran dentro de las categorias de '.$request->categories.' o contienen alguna palabra relacionada a ella, debes responder estrictamente solo la palabra "true" si esta relacionado o "false" caso contrario'],
             [
                "role" => "user",
-               "content" => $request->message,
+               "content" =>'"'.$request->message.'"',
             ],
             ['role' => 'assistant', 'content' => '👍']
         ],
@@ -66,7 +66,7 @@ class ChatController extends Controller
       return response()->json($data['choices'][0]['message'], 200, array(), JSON_PRETTY_PRINT);
     }
 
-    public function verificacionTitulo($message)  
+    public function verificacionTitulo($message,$tipo)  
     {
       $data = Http::withHeaders([
         'Content-Type' => 'application/json',
@@ -75,7 +75,35 @@ class ChatController extends Controller
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
         'messages' => [
-            ['role' => 'system', 'content' =>'el siguiente mensaje esta relacionado con las siguientes categorias: '.$request->categories.' .Caso contrario devuelve falso'],
+            ['role' => 'system', 'content' =>'eres un bot que analiza descripciones de denuncias en una ciudad y determina si los siguientes mensajes entran dentro de la categoria de '.$tipo.' o contienen alguna palabra relacionada a ella, estrictamente debes responder solo la palabra "true" si esta relacionado o "false" caso contrario'],
+            [
+               "role" => "user",
+               "content" =>'"'.$message.'"',
+            ],
+            ['role' => 'assistant', 'content' => '👍']
+        ],
+        'temperature' => 0.5,
+        "max_tokens" => 200,
+        "top_p" => 1.0,
+        "frequency_penalty" => 0.52,
+        "presence_penalty" => 0.5,
+        "stop" => ["11."],
+      ])
+      ->json();
+
+      return $data['choices'][0]['message'];
+    }
+
+    public function verificacionDescripcion($message,$tipo)  
+    {
+      $data = Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Bearer '.env('OPENAI_API_KEY'),
+      ])
+      ->post("https://api.openai.com/v1/chat/completions", [
+        "model" => "gpt-3.5-turbo",
+        'messages' => [
+            ['role' => 'system', 'content' =>'eres un bot que analiza descripciones de denuncias en una ciudad y determina si el siguiente mensaje entran dentro de la categoria de '.$tipo.' o contienen alguna palabra relacionada a ella, estrictamente debes responder solo una palabra "true" si esta relacionado o "false" caso contrario'],
             [
                "role" => "user",
                "content" => $message,
@@ -94,7 +122,7 @@ class ChatController extends Controller
       return $data['choices'][0]['message'];
     }
 
-    public function verificacionDescripcion($message)  
+    public function compararTextoTipo($message1,$tipo)  
     {
       $data = Http::withHeaders([
         'Content-Type' => 'application/json',
@@ -103,10 +131,10 @@ class ChatController extends Controller
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
         'messages' => [
-            ['role' => 'system', 'content' =>'el siguiente mensaje esta relacionado con las siguientes categorias: '.$request->categories.' .Caso contrario devuelve falso'],
+            ['role' => 'system', 'content' =>'eres un bot que analiza denuncias en una ciudad y determina si entran dentro de la categoria de '.$tipo.' o contienen alguna palabra relacionada a ella, estrictamente debes responder solo la palabra "true" si esta relacionado o "false" caso contrario'],
             [
                "role" => "user",
-               "content" => $message,
+               "content" =>'texto 1: "'.$message1,
             ],
             ['role' => 'assistant', 'content' => '👍']
         ],

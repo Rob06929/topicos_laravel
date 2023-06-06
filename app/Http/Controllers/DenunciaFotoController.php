@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DenunciaFoto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DenunciaFotoController extends Controller
@@ -33,9 +34,13 @@ class DenunciaFotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($url,$id_denuncia)
     {
-        //
+        $data=new DenunciaFoto;
+        $data->url=$url;
+        $data->id_denuncia=$id_denuncia;
+        $data->save();
+        return $data;
     }
 
     /**

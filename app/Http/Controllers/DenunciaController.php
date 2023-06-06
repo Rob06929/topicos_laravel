@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Denuncia;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DenunciaController extends Controller
 {
@@ -36,33 +37,45 @@ class DenunciaController extends Controller
      */
     public function store(Request $request)
     {   
-        $arrayStatus = array('status' => 'exito','titulo'=>'true','descripcion'=>'true','');
-        
-            $chat=new ChatController();
-            $messageTit=$chat->chatModeracion($request->titulo);
-            if ($this->noModerado($messageTit)) {
-                $arrayStatus['titulo']="titulo no moderado";
-            }
-            $messageDes=$chat->chatModeracion($request->descripcion);
-            if ($this->noModerado($messageDes)) {
-                $arrayStatus['descripcion']="descripcion no moderada";
-            }
-            return $arrayStatus;
-      
+        if ($request->hasFile('image')) {
+            $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+            $image_name = time() .'_foto.' . $extension;
+            $path = $request->file('image')->storeAs(
+                'images',
+                $image_name,
+                's3'
+            );
+            $data=new Denuncia;
+            $data->titulo=$request->titulo;
+            $data->descripcion=$request->descripcion;
+            $data->fecha_creacion=Carbon::now();
+            $data->latitud=$request->latitud;
+            $data->longitud=$request->longitud;
+            $data->id_tipo=$request->id_tipo;
+            $data->id_estado=$request->id_estado;
+            $data->id_usuario=$request->id_usuario;
+            $data->save();
+
+            $saveImg=new DenunciaFotoController;
+            $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
+
+            echo $data_img->url;
+        }
     }
 
     public function moderacionContenido(Request $request)
     {
-        $arrayStatus = array('status' => 'exito','titulo'=>'true','descripcion'=>'true','');
+        //$arrayStatus = array('status' => 'exito','titulo'=>'true','descripcion'=>'true','');
+        $arrayStatus = array('status' => 'exito','descripcion'=>'true');
         
         $chat=new ChatController();
-        $messageTit=$chat->chatModeracion($request->titulo);
+        /*$messageTit=$chat->chatModeracion($request->titulo);
         if ($this->noModerado($messageTit)) {
-            $arrayStatus['titulo']="titulo no moderado";
-        }
-        $messageDes=$chat->chatModeracion($request->descripcion);
+            $arrayStatus['titulo']="false";
+        }*/
+        return $messageDes=$chat->chatModeracion($request->descripcion);
         if ($this->noModerado($messageDes)) {
-            $arrayStatus['descripcion']="descripcion no moderada";
+            $arrayStatus['descripcion']="false";
         }
         return $arrayStatus;
     }
@@ -82,12 +95,32 @@ class DenunciaController extends Controller
             
             return $path;
         }*/
-        $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
-        $image_name = time() .'_ foto.' . $extension;
-        $image = $request->file('image')->move('images/', $image_name);
-        $inst1=new ApiImageController;
-        $scan_img=$inst1->analizeImage($image_name);
-        return $scan_img;
+        $lista=array("imagen"=>"false","descripcion"=>"false","error"=>"true");
+
+        if ($request->hasFile('image')) {
+            $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+            $image_name = time() .'_ foto.' . $extension;
+            $image = $request->file('image')->move('images/', $image_name);
+            $inst1=new ApiImageController;
+            $scan_img=$inst1->analizeImage($image_name);
+            //echo $scan_img;
+            //$lista["res_img"]=$scan_img["caption_GPTS"];
+            //$lista["res_img2"]=$scan_img->caption_GPTS;
+            $inst2=new ChatController();
+            $comparacion1=$inst2->compararTextoTipo($scan_img,$request->tipo);
+            $lista["com_img"]=$comparacion1;
+            $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->tipo);
+            $lista["com_desc"]=$comparacion2;
+            if ($this->containTrue($comparacion1['content'])) {
+                $lista["descripcion"]="true";
+            }
+            if ($this->containTrue($comparacion2['content'])) {
+                $lista["descripcion"]="true";
+            }
+           $lista["error"]="false";
+        }
+        return $lista; 
+
     }
 
     /**
@@ -137,9 +170,19 @@ class DenunciaController extends Controller
 
     public function noModerado($mensaje)
     {
-        if (strpos($mensaje, 'verdadero')>=0) {
+        if (strpos($mensaje, 'true')>=0 || strpos($mensaje, 'True.')>=0 || strpos($mensaje, 'True')>=0 || strpos($mensaje, 'True,')>=0) {
             return true;
         }
+        return false;
+    }
+
+    public function containTrue($mensaje)
+    {
+        if (strpos($mensaje, 'true')>=0) {
+            
+            return true;
+        }
+        echo strpos($mensaje, 'true');
         return false;
     }
 
