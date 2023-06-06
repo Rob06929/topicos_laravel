@@ -88,6 +88,10 @@ class DenunciaFotoController extends Controller
         
     }
 
+    public static function getFoto($id)
+    {
+        return DenunciaFoto::where("id_denuncia",$id)->first();
+    }
     public function storeFoto($base64)
     {
         
