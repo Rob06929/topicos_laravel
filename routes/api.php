@@ -84,6 +84,9 @@ Route::post('/actions/compararContenido', [DenunciaController::class, 'compararC
 
 Route::post('/actions/guardarDenuncia', [DenunciaController::class, 'store']);
 
+Route::get('/actions/cancelarDenuncia/{id}', [DenunciaController::class, 'cancelarDenuncia']);
+
+
 
 
 

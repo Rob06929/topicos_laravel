@@ -225,4 +225,10 @@ class DenunciaController extends Controller
         return $arr;
     }
 
+    public function cancelarDenuncia($id){
+        $data=Denuncia::find($id);
+        $data->id_estado=2;
+        $data->save();
+    }
+
 }
