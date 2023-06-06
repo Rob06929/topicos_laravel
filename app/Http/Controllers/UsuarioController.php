@@ -216,7 +216,9 @@ class UsuarioController extends Controller
         $data4->intentos=0;
         $data4->id_usuario=$data->id;
         $data4->save();
-
+        
+        // return json_encode(["response" => "exito",
+        //                     "id"=> $data->id]);
         $data3 = array('nombre' => $data1->nombre, 'uid' => $data2->uid, 'id' => $data->id,);
         $to_email = $data->email;
         $to_name = $data1->nombre;
@@ -226,7 +228,8 @@ class UsuarioController extends Controller
             $message->from('robfernandez06929@gmail.com', 'Alcaldia');
         });
 
-        return json_encode(["response" => "exito"]);
+        return json_encode(["response" => "exito",
+                            "id"=> $data->id]);
     }
 
     function generateRandomString($length = 10)
@@ -243,7 +246,7 @@ class UsuarioController extends Controller
     public function get_auth_email(Request $request)
     {
         $data = User::where("id", $request->id)->first();
-        // dd($data);
+        // return($request);
         return ($data->estado_confirmacion);
     }
 
