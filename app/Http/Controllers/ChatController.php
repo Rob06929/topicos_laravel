@@ -18,7 +18,7 @@ class ChatController extends Controller
                   ->post("https://api.openai.com/v1/chat/completions", [
                     "model" => "gpt-3.5-turbo",
                     'messages' => [
-                        ['role' => 'system', 'content' => 'si el mensaje contiene insultos responde estrictamente solo "true" caso contrario responde "falso" '],
+                        ['role' => 'system', 'content' => 'si el mensaje contiene insultos responde estrictamente solo "true" caso contrario responde "false" '],
                         [
                            "role" => "user",
                            "content" =>'"'.$message.'"',
@@ -33,7 +33,6 @@ class ChatController extends Controller
                     "stop" => ["11."],
                   ])
                   ->json();
-  
         return $data['choices'][0]['message']['content'];
  
     }
