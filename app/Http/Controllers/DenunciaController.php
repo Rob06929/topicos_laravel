@@ -54,6 +54,7 @@ class DenunciaController extends Controller
                 $image_name,
                 's3'
             );
+
             $data=new Denuncia;
             $data->titulo=$request->titulo;
             $data->descripcion=$request->descripcion;
@@ -67,8 +68,8 @@ class DenunciaController extends Controller
 
             $saveImg=new DenunciaFotoController;
             $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
-
-            echo $data_img->url;
+            return "exito";
+            //echo $data_img->url;
         }
     }
 
@@ -82,7 +83,7 @@ class DenunciaController extends Controller
         if ($this->noModerado($messageTit)) {
             $arrayStatus['titulo']="false";
         }*/
-        return $messageDes=$chat->chatModeracion($request->descripcion);
+        $messageDes=$chat->chatModeracion($request->descripcion);
         if ($this->noModerado($messageDes)) {
             $arrayStatus['descripcion']="false";
         }
@@ -121,7 +122,7 @@ class DenunciaController extends Controller
             $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->tipo);
             $lista["com_desc"]=$comparacion2;
             if ($this->containTrue($comparacion1['content'])) {
-                $lista["descripcion"]="true";
+                $lista["imagen"]="true";
             }
             if ($this->containTrue($comparacion2['content'])) {
                 $lista["descripcion"]="true";
@@ -179,7 +180,7 @@ class DenunciaController extends Controller
 
     public function noModerado($mensaje)
     {
-        if (strpos($mensaje, 'true')>=0 || strpos($mensaje, 'True.')>=0 || strpos($mensaje, 'True')>=0 || strpos($mensaje, 'True,')>=0) {
+        if (strpos($mensaje, 'true')!== false || strpos($mensaje, 'True.')!== false || strpos($mensaje, 'True')!== false || strpos($mensaje, 'True,')!== false) {
             return true;
         }
         return false;
@@ -187,11 +188,11 @@ class DenunciaController extends Controller
 
     public function containTrue($mensaje)
     {
-        if (strpos($mensaje, 'true')>=0) {
-            
+
+        if (strpos($mensaje, 'true')!== false || strpos($mensaje, 'True.')!== false || strpos($mensaje, 'True')!== false || strpos($mensaje, 'True,')!== false) {
             return true;
         }
-        echo strpos($mensaje, 'true');
+
         return false;
     }
 
@@ -202,7 +203,6 @@ class DenunciaController extends Controller
                
                 $data=Denuncia::where("id_tipo",$request->tipo_denuncia)->where("id_estado",$request->estado_denuncia)->get();
             }else{
-                echo "bbbbb";
                 $data=Denuncia::where("id_tipo",$request->tipo_denuncia)->get();
             }
             return json_encode($data);    
@@ -235,5 +235,38 @@ class DenunciaController extends Controller
         $data->id_estado=2;
         $data->save();
     }
+
+
+    public function updateDenuncia(Request $request)
+    {   
+        if ($request->hasFile('image')) {
+            
+
+            if ($request->modificado_imagen=="true") {
+                $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+                $image_name = time() .'_foto.' . $extension;
+                $path = $request->file('image')->storeAs(
+                    'images',
+                    $image_name,
+                    's3'
+                );
+            }
+           
+            $data->descripcion=$request->descripcion;
+            $data->fecha_creacion=Carbon::now();
+            $data->latitud=$request->latitud;
+            $data->longitud=$request->longitud;
+            $data->id_tipo=$request->id_tipo;
+            $data->id_estado=$request->id_estado;
+            $data->id_usuario=$request->id_usuario;
+            $data->save();
+
+            $saveImg=new DenunciaFotoController;
+            $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
+            return "exito";
+            //echo $data_img->url;
+        }
+    }
+
 
 }

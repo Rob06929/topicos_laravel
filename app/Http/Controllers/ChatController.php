@@ -103,7 +103,7 @@ class ChatController extends Controller
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
         'messages' => [
-            ['role' => 'system', 'content' =>'eres un bot que analiza descripciones de denuncias en una ciudad y determina si el siguiente mensaje entran dentro de la categoria de '.$tipo.' o contienen alguna palabra relacionada a ella, estrictamente debes responder solo una palabra "true" si esta relacionado o "false" caso contrario'],
+            ['role' => 'system', 'content' =>'eres un bot que analiza descripciones de denuncias en una ciudad y determina si el siguiente mensaje entra dentro de la categoria de '.$tipo.' o contienen alguna palabra relacionada a ella, estrictamente debes responder solo una palabra "true" si esta relacionado o "false" caso contrario'],
             [
                "role" => "user",
                "content" => $message,
