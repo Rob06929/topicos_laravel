@@ -67,14 +67,15 @@ class DenunciaController extends Controller
             'msgDescription'=> 'La descripcion no coincide con el tipo de denuncia',
         ];
         //validamos que la descripcion no tenga nada inapropiado
-        if($this->moderacionContenido($request)=='true'){//si devuelve true, es por que tiene cosas indebidas
+        $validation= $this->moderacionContenido($request);
+        if($validation['descripcion']=='false'){//si devuelve false, es por que tiene cosas indebidas
             $message['descripcionInapropiada']=2;
             return $message;
         }
-        // return 'hola';
+        // return $validation;
         //********************** realiza la comparacion con el tipo */
         $data=$this->compararContenidoImagen($request);
-        return $data;
+        // return $data;
         if($data['imagen']=='false'){//true=tiene relacion tipo con imagen
             $message['imageNoCoincide']='true';
         }
@@ -85,7 +86,7 @@ class DenunciaController extends Controller
             return $message;
         }
         // fin de la comparacion con tipo de denuncia
-        return $request;
+        // return $request;
         if ($request->hasFile('image')) {
             $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_foto.' . $extension;
@@ -95,22 +96,22 @@ class DenunciaController extends Controller
                 $image_name,
                 's3'
             );
-            return 'xd' ;
+            // return 'xd' ;
             $data=new Denuncia;
-            $data->titulo=$request->titulo;
+            $data->titulo=$request->title;
             $data->descripcion=$request->descripcion;
             $data->fecha_creacion=Carbon::now();
             $data->latitud=$request->latitud;
             $data->longitud=$request->longitud;
-            $data->id_tipo=$request->id_tipo;
-            $data->id_estado=$request->id_estado;
+            $data->id_tipo=$request->type_id;
+            $data->id_estado=1;
             $data->id_usuario=$request->id_usuario;
             $data->save();
-
+            // return 'xd' ;
             $saveImg=new DenunciaFotoController;
             $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
-
-            echo $data_img->url;
+            return "exito";
+            //echo $data_img->url;
         }
         return 'error';
     }
@@ -125,9 +126,7 @@ class DenunciaController extends Controller
         if ($this->noModerado($messageTit)) {
             $arrayStatus['titulo']="false";
         }*/
-        return $messageDes=$chat->chatModeracion($request->descripcion);
-        // return $request->descripcion;
-        // return $request->description;
+        $messageDes=$chat->chatModeracion($request->descripcion);
         if ($this->noModerado($messageDes)) {
             $arrayStatus['descripcion']="false";
         }
@@ -225,7 +224,7 @@ class DenunciaController extends Controller
 
     public function noModerado($mensaje)
     {
-        if (strpos($mensaje, 'true')>=0 || strpos($mensaje, 'True.')>=0 || strpos($mensaje, 'True')>=0 || strpos($mensaje, 'True,')>=0) {
+        if (strpos($mensaje, 'true')!== false || strpos($mensaje, 'True.')!== false || strpos($mensaje, 'True')!== false || strpos($mensaje, 'True,')!== false) {
             return true;
         }
         return false;
@@ -233,11 +232,11 @@ class DenunciaController extends Controller
 
     public function containTrue($mensaje)
     {
-        if ((strpos($mensaje, 'true')>=0 || strpos($mensaje, 'True.')>=0 || strpos($mensaje, 'True')>=0 || strpos($mensaje, 'True,')>=0)) {
 
+        if (strpos($mensaje, 'true')!== false || strpos($mensaje, 'True.')!== false || strpos($mensaje, 'True')!== false || strpos($mensaje, 'True,')!== false) {
             return true;
         }
-        // echo strpos($mensaje, 'true');
+
         return false;
     }
 
@@ -283,5 +282,38 @@ class DenunciaController extends Controller
         $data->id_estado=2;
         $data->save();
     }
+
+
+    public function updateDenuncia(Request $request)
+    {   
+        if ($request->hasFile('image')) {
+            
+
+            if ($request->modificado_imagen=="true") {
+                $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+                $image_name = time() .'_foto.' . $extension;
+                $path = $request->file('image')->storeAs(
+                    'images',
+                    $image_name,
+                    's3'
+                );
+            }
+           
+            $data->descripcion=$request->descripcion;
+            $data->fecha_creacion=Carbon::now();
+            $data->latitud=$request->latitud;
+            $data->longitud=$request->longitud;
+            $data->id_tipo=$request->id_tipo;
+            $data->id_estado=$request->id_estado;
+            $data->id_usuario=$request->id_usuario;
+            $data->save();
+
+            $saveImg=new DenunciaFotoController;
+            $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
+            return "exito";
+            //echo $data_img->url;
+        }
+    }
+
 
 }
