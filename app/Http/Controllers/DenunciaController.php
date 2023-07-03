@@ -18,8 +18,19 @@ class DenunciaController extends Controller
         //Denuncia::where("id_usuario",$id)->get();
         // return json_encode(Denuncia::all()->join("denuncia_estados","denuncia_estados.id","=","denuncia")->select("nombre")->get());
         $lista=array();
-        $data=Denuncia::select('*', 'denuncia_estados.nombre as nombre_estado')
-                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")->get();
+        // return Denuncia::select('denuncias.*',
+        //                         'denuncia_estados.nombre as nombre_estado',
+        //                         'denuncia_tipos.nombre as nombre_tipo'
+        //                         )
+        //             ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
+        //             ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo")
+        //             ->get();
+
+        $data=Denuncia::select('*', 'denuncia_estados.nombre as nombre_estado',
+                            'denuncia_tipos.nombre as nombre_tipo')
+                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
+                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo")
+                    ->get();
         foreach ($data as $value) {
             $value->url=DenunciaFotoController::getFoto($value->id)->url;
         }
@@ -45,39 +56,71 @@ class DenunciaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
+        // return $request;
+        // return $request->hasFile('image');
+        $message=[
+            'descripcionInapropiada'=> 1,//2= si la descripcion inapropiada, 3= descripcion no coincide con denuncia
+            'imageNoCoincide'=> 'false',//si la imagen no coincide se envia true
+            'messageDescripcion'=> 'Tiene contenido inapropiado*',
+            'msgImage'=> 'La imagen no coincide con el tipo de denuncia',
+            'msgDescription'=> 'La descripcion no coincide con el tipo de denuncia',
+        ];
+        //validamos que la descripcion no tenga nada inapropiado
+        $validation= $this->moderacionContenido($request);
+        if($validation['descripcion']=='false'){//si devuelve false, es por que tiene cosas indebidas
+            $message['descripcionInapropiada']=2;
+            return $message;
+        }
+        // return $validation;
+        //********************** realiza la comparacion con el tipo */
+        $data=$this->compararContenidoImagen($request);
+        // return $data;
+        if($data['imagen']=='false'){//true=tiene relacion tipo con imagen
+            $message['imageNoCoincide']='true';
+        }
+        if($data['descripcion']=='false'){//true=tiene relacion tipo con descripcion
+            $message['descripcionInapropiada']=3;
+        }
+        if($message['imageNoCoincide']=='true' || $message['descripcionInapropiada']==3){
+            return $message;
+        }
+        // fin de la comparacion con tipo de denuncia
+        // return $request;
         if ($request->hasFile('image')) {
             $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_foto.' . $extension;
+            // return $image_name;
             $path = $request->file('image')->storeAs(
                 'images',
                 $image_name,
                 's3'
             );
-
+            // return 'xd' ;
             $data=new Denuncia;
-            $data->titulo=$request->titulo;
+            $data->titulo=$request->title;
             $data->descripcion=$request->descripcion;
             $data->fecha_creacion=Carbon::now();
             $data->latitud=$request->latitud;
             $data->longitud=$request->longitud;
-            $data->id_tipo=$request->id_tipo;
-            $data->id_estado=$request->id_estado;
+            $data->id_tipo=$request->type_id;
+            $data->id_estado=1;
             $data->id_usuario=$request->id_usuario;
             $data->save();
-
+            // return 'xd' ;
             $saveImg=new DenunciaFotoController;
             $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
             return "exito";
             //echo $data_img->url;
         }
+        return 'error';
     }
 
     public function moderacionContenido(Request $request)
     {
         //$arrayStatus = array('status' => 'exito','titulo'=>'true','descripcion'=>'true','');
         $arrayStatus = array('status' => 'exito','descripcion'=>'true');
-        
+
         $chat=new ChatController();
         /*$messageTit=$chat->chatModeracion($request->titulo);
         if ($this->noModerado($messageTit)) {
@@ -102,7 +145,7 @@ class DenunciaController extends Controller
                 $image_name,
                 's3'
             );
-            
+
             return $path;
         }*/
         $lista=array("imagen"=>"false","descripcion"=>"false","error"=>"true");
@@ -113,13 +156,14 @@ class DenunciaController extends Controller
             $image = $request->file('image')->move('images/', $image_name);
             $inst1=new ApiImageController;
             $scan_img=$inst1->analizeImage($image_name);
+            // return $scan_img;
             //echo $scan_img;
             //$lista["res_img"]=$scan_img["caption_GPTS"];
             //$lista["res_img2"]=$scan_img->caption_GPTS;
             $inst2=new ChatController();
-            $comparacion1=$inst2->compararTextoTipo($scan_img,$request->tipo);
+            $comparacion1=$inst2->compararTextoTipo($scan_img,$request->type_name);
             $lista["com_img"]=$comparacion1;
-            $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->tipo);
+            $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->type_name);
             $lista["com_desc"]=$comparacion2;
             if ($this->containTrue($comparacion1['content'])) {
                 $lista["imagen"]="true";
@@ -129,7 +173,7 @@ class DenunciaController extends Controller
             }
            $lista["error"]="false";
         }
-        return $lista; 
+        return $lista;
 
     }
 
@@ -198,25 +242,28 @@ class DenunciaController extends Controller
 
     public function getFiltro(Request $request)
     {
-        if ($request->tipo_denuncia) {
-            if ($request->estado_denuncia) {
-               
-                $data=Denuncia::where("id_tipo",$request->tipo_denuncia)->where("id_estado",$request->estado_denuncia)->get();
-            }else{
-                $data=Denuncia::where("id_tipo",$request->tipo_denuncia)->get();
-            }
-            return json_encode($data);    
-        }else{
-            if ($request->estado_denuncia) {
-                $data=Denuncia::where("id_estado",$request->estado_denuncia)->get();
-                return json_encode($data);    
 
-            }else{
-                return $this->index();
-            }
-            
+        $data=Denuncia::select('denuncias.*', 'denuncia_estados.nombre as nombre_estado',
+                            'denuncia_tipos.nombre as nombre_tipo')
+                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
+                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo");
+        if ($request->type_id!='') {
+                $data=$data->where("denuncias.id_tipo",$request->type_id);
         }
-        
+        if($request->state_id!=''){
+            $data=$data->where("denuncias.id_estado",$request->state_id);
+        }
+        if ($request->date_finish!='') {
+            $data=$data->where("denuncias.fecha_creacion", '<=',$request->date_finish);
+        }
+        if($request->date_init!=''){
+            $data=$data->where("denuncias.fecha_creacion", '>=', $request->date_init);
+        }
+        $data=$data->get();
+        foreach ($data as $value) {
+            $value->url=DenunciaFotoController::getFoto($value->id)->url;
+        }
+        return $data;
     }
 
     public function getTipoEstado()
