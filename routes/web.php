@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('update_periodos');
-})->name('form');
+//Route::get('/', function () {
+//    return view('update_periodos');
+//})->name('form');
+
+Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
+Route::get('/mapa', [HomeController::class, 'mapa'])->name('mapa');
+
+
+
+
 
 Route::get('register', function () {
     return view('register');
