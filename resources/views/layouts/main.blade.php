@@ -3,10 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <title>Página de Bienvenida</title>
         @yield('header')
 
         <script src="https://cdn.tailwindcss.com"></script>
+
+        <style>
+            ul > li {
+                display: inline-block;
+                /* You can also add some margins here to make it look prettier */
+            }   
+        </style>
     </head>
     <body class="font-sans antialiased">
 

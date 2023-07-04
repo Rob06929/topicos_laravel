@@ -11,6 +11,9 @@ class HomeController extends Controller
     }
 
     function mapa() {
-        return view('mapa',["login"=>true,"dashboard"=>true]);
+        $denuncias= new DenunciaController();
+        $tipo=new DenunciaTipoController();
+        $estado=new DenunciaEstadoController();
+        return view('mapa',["login"=>true,"dashboard"=>true,"denuncias"=>$denuncias->index(),"tipos"=>$tipo->index(),"estados"=>$estado->index()]);
     }
 }

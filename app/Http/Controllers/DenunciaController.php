@@ -266,6 +266,31 @@ class DenunciaController extends Controller
         return $data;
     }
 
+    public function getFiltroMap(Request $request)
+    {
+
+
+        $data=Denuncia::select('denuncias.*', 'denuncia_estados.nombre as nombre_estado',
+                                'denuncia_tipos.nombre as nombre_tipo')
+                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
+                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo");
+        if ($request->type_id!='' && $request->type_id!='0') {
+            $data=$data->where("denuncias.id_tipo",$request->type_id);
+        }
+        if($request->state_id!='' && $request->state_id!='0'){
+            $data=$data->where("denuncias.id_estado",$request->state_id);
+        }
+        if ($request->num_days!='' && $request->num_days!='0') {
+            $carbon = new \Carbon\Carbon();
+            $date = $carbon->now();
+            $end_date=$date->subDays($request->num_days);
+            $data=$data->where("denuncias.fecha_creacion", '>=',$end_date);
+        }
+        $data=$data->get();
+
+        return $data;
+    }
+
     public function getTipoEstado()
     {
         $tipo=new DenunciaTipoController;

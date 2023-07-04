@@ -79,6 +79,8 @@ Route::get('/actions/getTipoEstado', [DenunciaController::class, 'getTipoEstado'
 Route::get('/actions/getDenuncias', [DenunciaController::class, 'index']);
 
 Route::post('/actions/getFiltroDenuncias', [DenunciaController::class, 'getFiltro']);
+Route::post('/getFiltroDenunciasMap', [DenunciaController::class, 'getFiltroMap']);
+
 
 Route::post('/actions/compararContenido', [DenunciaController::class, 'compararContenidoImagen']);
 
