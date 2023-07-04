@@ -12,9 +12,15 @@ class FuncionarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function indexAdmin(){
+        return view('mainPage');
+    }
+
+    
     public function index()
     {
-        //
+        return view('mainPage');
     }
 
     /**

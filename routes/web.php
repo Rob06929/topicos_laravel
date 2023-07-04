@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DenunciaController;
+use App\Http\Controllers\UsuarioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +24,12 @@ use App\Http\Controllers\DenunciaController;
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/mapa', [HomeController::class, 'mapa'])->name('mapa');
 
+Route::get('/login', [HomeController::class, 'login'])->name('login');
 
+Route::get('/register', [HomeController::class, 'register'])->name('register');
 
+Route::post('/login_user', [UsuarioController::class, 'login'])->name('login_user');
 
-
-Route::get('register', function () {
-    return view('register');
-})->name('register');
-
-Route::get('login', function () {
-    return view('login');
-})->name('login');
 
 Route::get('verification', 'UserController@info_verification')->name('verification');
 

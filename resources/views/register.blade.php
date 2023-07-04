@@ -1,76 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página de Registro</title>
-  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
 
-        .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        }
+@extends('layouts.main')
 
-        ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        }
+@section('header')
 
-        a {
-        color: inherit;
-        text-decoration: none;
-        }
+@endsection
 
-        a:hover {
-        text-decoration: underline;
-        }
-  </style>
-</head>
-<body class="font-sans antialiased">
-  <div
-  class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gradient-to-r from-neutral-50 to-green-500">
-  <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-right">
-      <img src="img/escudo.png" width="200" height="300" alt="escudo de santa cruz de la sierra">
+@section('content')
+
+<div class="bg-white shadow rounded-lg w-auto" style="width: 500px">
+  <div class="px-5 py-7">
+      <h2 class="text-center font-bold text-gray-700 text-2xl">Iniciar sesión</h2>
+      <form class="mt-7" action="#" method="POST" id="formulario">
+          <label class="font-semibold text-sm text-gray-600 pb-1 block">Nombre de usuario</label>
+          <input type="text" name="username" id="username"
+              class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:outline-none focus:shadow-outline-blue"
+              placeholder="Escribe tu nombre de usuario" autofocus />
+
+          <label class="font-semibold text-sm text-gray-600 pb-1 block">Contraseña</label>
+
+          <input type="text" id="image" name="image" class="border rounded w-full py-2 px-3"
+          placeholder="Escribe tu contraseña" >
+          {{-- <h2 class="font-bold text-gray-700 mb-2">Vista previa:</h2>
+          <img src="/images/joven2.jpg" id="originalImg" class="h-48 w-auto object-contain bg-gray-300" width="1400" height="800">
+          <canvas id="reflay" class="overlay" hidden ></canvas> --}}
+
+          <div class="flex justify-center">
+          <button type="submit" id="envio"
+              class="transition duration-500 ease-in-out bg-blue-500 hover:bg-blue-600 transform hover:-translate-y-1 hover:scale-110 text-white font-bold py-2 px-4 rounded-full w-full max-w-xs mx-auto mt-5">Iniciar
+              sesión</button>
+          </div>
+      </form>
   </div>
-  <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-    {{-- <h1 class="text-xl font-bold">Mi Sitio Web</h1> --}}
-      <nav>
-        <ul class="flex space-x-4">
-          <li><a href="{{route('welcome')}}" class="text-white">Inicio</a></li>
-          <li><a href="#" class="text-white">Acerca de</a></li>
-          <li><a href="#" class="text-white">Servicios</a></li>
-          <li><a href="#" class="text-white">Contacto</a></li>
-          <li><a href="{{route('login')}}" class="text-white bg-blue-500 px-4 py-2 rounded">Login</a></li>
-          <li><a href="{{route('register')}}" class="text-white bg-green-500 px-4 py-2 rounded">Registro</a></li>
-        </ul>
-      </nav>
-    {{-- <a href="{{route('welcome')}}" class=" mr-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Inicio</a>
-    <a href="{{route('register')}}" class="ml-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Acerca</a>
-    <a href="{{route('welcome')}}" class=" mr-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Servicios</a>
-    <a href="{{route('register')}}" class="ml-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Contacto</a>
-    <a href="{{route('welcome')}}" class=" mr-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-    <a href="{{route('register')}}" class="ml-4 font-semibold text-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a> --}}
-</div>  
-  {{-- <header class="bg-green-500 text-white py-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Mi Sitio Web</h1>
-      <nav>
-        <ul class="flex space-x-4">
-          <li><a href="#" class="text-white">Inicio</a></li>
-          <li><a href="#" class="text-white">Acerca de</a></li>
-          <li><a href="#" class="text-white">Servicios</a></li>
-          <li><a href="#" class="text-white">Contacto</a></li>
-          <li><a href="#" class="text-white bg-blue-500 px-4 py-2 rounded">Login</a></li>
-          <li><a href="#" class="text-white bg-green-500 px-4 py-2 rounded">Registro</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header> --}}
-  
+</div>
   <main class="container mx-auto py-8 bg-white rounded shadow-lg w-1/2 ">
     <h2 class="text-2xl font-bold mb-4">Registro de Usuario</h2>
     <form>
@@ -91,7 +52,4 @@
       </div>
     </form>
   </main>
-</div>
-
-</body>
-</html>
+@endsection

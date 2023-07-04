@@ -7,7 +7,15 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     function welcome() {
-        return view('welcome',["login"=>true,"dashboard"=>false]);
+        return view('welcome',["login"=>true,"dashboard"=>false,"register"=>false]);
+    }
+
+    function login() {
+        return view('login',["login"=>false,"dashboard"=>true,"register"=>false]);
+    }
+
+    function register() {
+        return view('register',["login"=>true,"dashboard"=>true,"register"=>false]);
     }
 
     function mapa() {

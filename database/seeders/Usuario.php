@@ -22,5 +22,14 @@ class Usuario extends Seeder
             'url_foto' => '1683672643776_foto2.jpg',
             'id_persona' => '1',
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'carlos123',
+            'email' => 'carlos@gmail.com',
+            'password' => "admin123",
+            'estado_confirmacion' => 'false',
+            'url_foto' => '1683672643776_foto2.jpg',
+            'id_persona' => '1',
+        ]);
     }
 }

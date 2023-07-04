@@ -1,24 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
 
-@extends('layouts.main')
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-@section('header')
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        #overlay,
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <title>Document</title>
+</head>
 
-@endsection
+<body class="font-sans antialiased">
 
-@section('content')
-      <div class="bg-white shadow rounded-lg w-auto" style="width: 500px">
-                    <div class="px-5 py-7">
+    <div
+        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gradient-to-r from-neutral-50 to-green-500">
+        <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-right">
+            <img src="img/escudo.png" width="200" height="300" alt="escudo de santa cruz de la sierra">
+        </div>
+
+        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
+            <nav>
+                <ul class="flex space-x-4">
+                  <li><a href="{{route('welcome')}}" class="text-white">Inicio</a></li>
+                  <li><a href="#" class="text-white">Acerca de</a></li>
+                  <li><a href="#" class="text-white">Servicios</a></li>
+                  <li><a href="#" class="text-white">Contacto</a></li>
+                  <li><a href="{{route('login')}}" class="text-white bg-blue-500 px-4 py-2 rounded">Login</a></li>
+                  <li><a href="{{route('register')}}" class="text-white bg-green-500 px-4 py-2 rounded">Registro</a></li>
+                </ul>
+              </nav>
+        </div>    
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 login-alert1 hidden" role="alert">
+            <p class="font-bold">Inicio de sesión correcto</p>
+            <p>Su cuenta ha sido verificada y se ha iniciado sesión correctamente.</p>
+        </div>
+        <div class="bg-red-100 border-l-4 border-green-500 text-green-700 p-4 login-alert2 hidden" role="alert">
+            <p class="font-bold">Error foto no coincide</p>
+            <p>Su cuenta no ha sido verificada y no se ha iniciado sesión correctamente.</p>
+        </div>
+        {{-- <div class="min-h-screen bg-gray-100 flex flex-col justify-center sm:py-12"> --}}
+            {{-- <div class="p-10 xs:p-0 mx-auto md:w-full mt-4"> --}}
+                <div class="bg-white shadow w-1/2 rounded-lg divide-y divide-gray-200">
+                    <div class="px-5 py-7 mx-auto">
                         <h2 class="text-center font-bold text-gray-700 text-2xl">Iniciar sesión</h2>
-                        <form class="mt-7" action="{{ route('login_user') }}" method="POST">
-                            @csrf
+                        <form class="mt-7" action="#" method="POST" id="formulario">
                             <label class="font-semibold text-sm text-gray-600 pb-1 block">Nombre de usuario</label>
-                            <input type="text" name="name"
+                            <input type="text" name="username" id="username"
                                 class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:outline-none focus:shadow-outline-blue"
                                 placeholder="Escribe tu nombre de usuario" autofocus />
 
                             <label class="font-semibold text-sm text-gray-600 pb-1 block">Contraseña</label>
 
-                            <input type="password" name="password" class="border rounded w-full py-2 px-3"
+                            <input type="text" id="image" name="image" class="border rounded w-full py-2 px-3"
                             placeholder="Escribe tu contraseña" >
                             {{-- <h2 class="font-bold text-gray-700 mb-2">Vista previa:</h2>
                             <img src="/images/joven2.jpg" id="originalImg" class="h-48 w-auto object-contain bg-gray-300" width="1400" height="800">
@@ -31,10 +73,14 @@
                             </div>
                         </form>
                     </div>
-        </div>
-@endsection
+                </div>
+            {{-- </div> --}}
+        {{-- </div> --}}
+    </div>
 
-@section('script')
+
+
+
 
     <script src="/js/jquery-2.1.1.min.js"></script>
 
@@ -181,4 +227,29 @@
         }
     </script>
 
-@endsection
+</body>
+
+</html>
+
+<!--<html>
+    <head>
+        <title>Face App</title>
+        <style>
+        #overlay, .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            }
+        </style>
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <img src="/images/joven2.jpg" id="originalImg" width="1400" height="800" />
+        <canvas id="reflay" class="overlay"></canvas>
+
+        <script src="/js/jquery-2.1.1.min.js"></script>
+
+        <script src="/js/face-api.js"></script>
+        <script src="/js/faceSystem.js"></script>
+    </body>
+</html>-->

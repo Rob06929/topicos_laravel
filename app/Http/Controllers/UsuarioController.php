@@ -57,6 +57,18 @@ class UsuarioController extends Controller
         //
     }
 
+    function login(Request $request) {
+        $data=User::where("name",$request->name)->first();
+        
+        if ($data!="") {
+           
+            if ($data->password==$request->password) {
+                return view('mainPage');
+            }
+        }
+        return redirect()->route('login');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
