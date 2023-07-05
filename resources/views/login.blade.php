@@ -11,10 +11,10 @@
                         <h2 class="text-center font-bold text-gray-700 text-2xl">Iniciar sesión</h2>
                         <form class="mt-7" action="{{ route('login_user') }}" method="POST">
                             @csrf
-                            <label class="font-semibold text-sm text-gray-600 pb-1 block">Nombre de usuario</label>
-                            <input type="text" name="name"
+                            <label class="font-semibold text-sm text-gray-600 pb-1 block">Correo electronico</label>
+                            <input type="email" name="email"
                                 class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:outline-none focus:shadow-outline-blue"
-                                placeholder="Escribe tu nombre de usuario" autofocus />
+                                placeholder="Escribe correo electronico" autofocus />
 
                             <label class="font-semibold text-sm text-gray-600 pb-1 block">Contraseña</label>
 

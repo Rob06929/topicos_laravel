@@ -14,6 +14,6 @@ class Vecino extends Seeder
      */
     public function run()
     {
-        //
+
     }
 }

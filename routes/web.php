@@ -29,7 +29,10 @@ Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/register', [HomeController::class, 'register'])->name('register');
 
 Route::post('/login_user', [UsuarioController::class, 'login'])->name('login_user');
+Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
+Route::get('/inicio', [UsuarioController::class, 'inicio'])->name('inicio');
 
+Route::get('/lista_denuncias', [UsuarioController::class,'lista_denuncias'])->name('lista_denuncias');
 
 Route::get('verification', 'UserController@info_verification')->name('verification');
 

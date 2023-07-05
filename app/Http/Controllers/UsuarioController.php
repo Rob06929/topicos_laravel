@@ -14,7 +14,15 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
 use App\Models\UpdatePassword;
 use App\Models\Usuario;
+use App\Models\Funcionario;
+use App\Models\Denuncia;
+use App\Models\DenunciaTipo;
+
+
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Auth;
+
 
 
 use Illuminate\Http\Request;
@@ -57,16 +65,36 @@ class UsuarioController extends Controller
         //
     }
 
-    function login(Request $request) {
-        $data=User::where("name",$request->name)->first();
-        
-        if ($data!="") {
-           
-            if ($data->password==$request->password) {
-                return view('mainPage');
-            }
+    function login(Request $request) {        
+        if (Auth::attempt(['email' => $request->email,  'password' => $request->password])) {            
+            return redirect()->route('inicio');
         }
         return redirect()->route('login');
+    }
+
+
+    function inicio() {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $tipo=DenunciaTipo::find($funcionario->id_area);
+
+        return view('mainPage',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo]);
+    }
+
+    function logout() {
+        Auth::logout();
+        return redirect()->route('welcome');
+    }
+
+    function lista_denuncias() {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $tipo=DenunciaTipo::find($funcionario->id_area);
+        //$denuncias=Denuncia::where('id',$funcionario->id_area)->get();
+        $denuncias=Denuncia::all();
+        return view('lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'denuncias'=>$denuncias]);
     }
 
     /**

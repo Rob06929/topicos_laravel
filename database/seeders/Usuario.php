@@ -19,17 +19,17 @@ class Usuario extends Seeder
             'email' => 'fernando02@gmail.com',
             'password' => bcrypt('laravel'),
             'estado_confirmacion' => 'false',
-            'url_foto' => '1683672643776_foto2.jpg',
+            'url_foto'=>'https://imagenes.elpais.com/resizer/S-S1ykkQEs145yX5BB6voADSec8=/1200x0/cloudfront-eu-central-1.images.arcpublishing.com/prisa/IH2JTR2AYT73YY2IVNTF3BFV2Q.jpg',
             'id_persona' => '1',
         ]);
 
         DB::table('users')->insert([
             'name' => 'carlos123',
             'email' => 'carlos@gmail.com',
-            'password' => "admin123",
+            'password' => bcrypt('admin123'),
             'estado_confirmacion' => 'false',
-            'url_foto' => '1683672643776_foto2.jpg',
-            'id_persona' => '1',
+            'url_foto'=>'https://imagenes.elpais.com/resizer/S-S1ykkQEs145yX5BB6voADSec8=/1200x0/cloudfront-eu-central-1.images.arcpublishing.com/prisa/IH2JTR2AYT73YY2IVNTF3BFV2Q.jpg',
+            'id_persona' => '2',
         ]);
     }
 }

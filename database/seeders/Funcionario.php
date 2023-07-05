@@ -15,8 +15,11 @@ class Funcionario extends Seeder
      */
     public function run()
     {
-        DB::table('professions')->insert([
-            'title' => 'Desarrollador back-end',
+        DB::table('funcionarios')->insert([
+            'codigo' => 'AD34AS',
+            'id_area' => 1,
+            'id_persona' => 2,
         ]);
+
     }
 }
