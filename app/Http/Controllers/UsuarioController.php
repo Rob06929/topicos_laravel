@@ -17,6 +17,7 @@ use App\Models\Usuario;
 use App\Models\Funcionario;
 use App\Models\Denuncia;
 use App\Models\DenunciaTipo;
+use App\Models\Area;
 
 
 use Carbon\Carbon;
@@ -94,9 +95,21 @@ class UsuarioController extends Controller
         $tipo=DenunciaTipo::find($funcionario->id_area);
         $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image')
                     ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
-                    ->get();
-        return view('lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'denuncias'=>$denuncias]);
+                    ->latest()->paginate(10);
+
+        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'denuncias'=>$denuncias]);
     }
+
+    function lista_areas() {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $tipo=DenunciaTipo::find($funcionario->id_area);
+        $areas=Area::all();
+        return view('denuncia_areas.lista_areas',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'areas'=>$areas]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

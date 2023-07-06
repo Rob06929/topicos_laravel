@@ -62,7 +62,7 @@
                   </a>
                </li>
                <li>
-                  <a href="#" class="flex items-center p-2 hover:text-gray-900 rounded-lg hover:bg-green-100 text-gray-100 group">
+                  <a href="{{ route('lista_areas') }}" class="flex items-center p-2 hover:text-gray-900 rounded-lg hover:bg-green-100 text-gray-100 group">
                      <span class="ml-3">Areas</span>
                   </a>
                </li>

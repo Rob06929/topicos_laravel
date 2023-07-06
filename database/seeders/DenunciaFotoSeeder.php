@@ -27,5 +27,17 @@ class DenunciaFotoSeeder extends Seeder
             'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
             'id_denuncia' => 3,
         ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 4,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 5,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 6,
+        ]);
     }
 }

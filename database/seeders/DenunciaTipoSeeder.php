@@ -17,14 +17,20 @@ class DenunciaTipoSeeder extends Seeder
         DB::table('denuncia_tipos')->insert([
             'nombre' => 'Alcantarillado',
             'descripcion' => 'descripcion de la tipo',
+            'id_area' => 1,
+
         ]);
         DB::table('denuncia_tipos')->insert([
             'nombre' => 'Iluminacion',
             'descripcion' => 'descripcion de la tipo',
+            'id_area' => 2,
+
         ]);
         DB::table('denuncia_tipos')->insert([
             'nombre' => 'Parques y Jardines',
             'descripcion' => 'descripcion de tipo',
+            'id_area' => 3,
+
         ]);
     }
 }

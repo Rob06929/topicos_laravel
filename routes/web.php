@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\AreaController;
+
 
 
 /*
@@ -33,6 +35,10 @@ Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 Route::get('/inicio', [UsuarioController::class, 'inicio'])->name('inicio');
 
 Route::get('/lista_denuncias', [UsuarioController::class,'lista_denuncias'])->name('lista_denuncias');
+Route::get('/lista_areas', [UsuarioController::class,'lista_areas'])->name('lista_areas');
+
+Route::post('/registro_area', [AreaController::class,'store'])->name('registro_area');
+
 
 Route::get('verification', 'UserController@info_verification')->name('verification');
 

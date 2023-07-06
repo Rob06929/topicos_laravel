@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDenunciaTiposTable extends Migration
+class CreateAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateDenunciaTiposTable extends Migration
      */
     public function up()
     {
-        Schema::create('denuncia_tipos', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre");
-            $table->string("descripcion");
-            $table->integer("id_area");
+            $table->string('nombre');
+            $table->string('descripcion');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateDenunciaTiposTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('denuncia_tipos');
+        Schema::dropIfExists('areas');
     }
 }
