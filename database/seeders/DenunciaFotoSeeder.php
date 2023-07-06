@@ -39,5 +39,30 @@ class DenunciaFotoSeeder extends Seeder
             'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
             'id_denuncia' => 6,
         ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/antigua-calle-roto-luz-de-semaforo-y-sucio-persianas-desplegables-en-suburbio-ruinoso-deteriorado-barrio-residencial-urbano-2ajamew.jpg',
+            'id_denuncia' => 7,
+            
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/BD4PPYFU2RDNHH4YQWZQ2LPDXI.jpg',
+            'id_denuncia' => 8,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 9,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 10,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 11,
+        ]);
+        DB::table('denuncia_fotos')->insert([
+            'url' => 'https://ex-software1.s3.amazonaws.com/detalle-shot-rota-con-una-lampara-de-la-calle-con-el-cielo-nublado-al-fondo-f5cnhd.jpg',
+            'id_denuncia' => 12,
+        ]);
     }
 }

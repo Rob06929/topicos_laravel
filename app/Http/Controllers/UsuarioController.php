@@ -17,7 +17,10 @@ use App\Models\Usuario;
 use App\Models\Funcionario;
 use App\Models\Denuncia;
 use App\Models\DenunciaTipo;
+use App\Models\DenunciaEstado;
 use App\Models\Area;
+use App\Models\DenunciaFoto;
+
 
 
 use Carbon\Carbon;
@@ -78,9 +81,8 @@ class UsuarioController extends Controller
         $data=Auth::user();
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
-        $tipo=DenunciaTipo::find($funcionario->id_area);
-
-        return view('mainPage',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo]);
+        $area=Area::find($funcionario->id_area);
+        return view('mainPage',['usuario'=>$data,'persona'=>$persona,'area'=>$area]);
     }
 
     function logout() {
@@ -88,25 +90,45 @@ class UsuarioController extends Controller
         return redirect()->route('welcome');
     }
 
+    function info_denuncia($id) {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $denuncia=Denuncia::find($id);
+        $tipo=DenunciaTipo::find($denuncia->id_tipo);
+        $area=Area::find($tipo->id_area);
+        $estado=DenunciaEstado::find($denuncia->id_estado);
+        
+        $estados=DenunciaEstado::all();
+        $foto=DenunciaFoto::where('id_denuncia',$denuncia->id)->first();
+        return view('denuncias_funcionario.info_denuncia',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'area'=>$area,'denuncia'=>$denuncia, 'estado'=>$estado, 'estados'=>$estados,'foto'=>$foto]); 
+    }
+
+    function cambiarEstadoDenuncia(Request $request) {
+        $data=Denuncia::find($request->id_denuncia);
+        $data->id_estado=$request->id_estado;
+        $data->save();
+        return "exito";
+    }
     function lista_denuncias() {
         $data=Auth::user();
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
-        $tipo=DenunciaTipo::find($funcionario->id_area);
-        $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image')
+        $area=DenunciaTipo::find($funcionario->id_area);
+        $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image','denuncia_estados.nombre as nombre_estado')
                     ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
+                    ->leftJoin('denuncia_estados', 'denuncia_estados.id', 'denuncias.id_estado')
                     ->latest()->paginate(10);
 
-        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'denuncias'=>$denuncias]);
+        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'denuncias'=>$denuncias]);
     }
 
     function lista_areas() {
         $data=Auth::user();
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
-        $tipo=DenunciaTipo::find($funcionario->id_area);
+        $area=DenunciaTipo::find($funcionario->id_area);
         $areas=Area::all();
-        return view('denuncia_areas.lista_areas',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'areas'=>$areas]);
+        return view('denuncia_areas.lista_areas',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'areas'=>$areas]);
     }
 
 

@@ -21,7 +21,7 @@
              <div class="flex items-center justify-start">
 
                <a href="#" class="flex ml-2 md:mr-24">
-                  <img src="img/escudo2.png"  width="200" height="300"  alt="escudo de santa cruz de la sierra">
+                  <img src="../img/escudo2.png"  width="200" height="300"  alt="escudo de santa cruz de la sierra">
                </a>
              </div>
              <div class="flex items-center mr-4">
@@ -47,7 +47,7 @@
                   <div ><img class="rounded-lg p-1" src="{{$usuario->url_foto}}" alt=""></div>
                   <p>Nombre: {{$persona->nombre}}</p>
                   <p>Email: {{$usuario->email}}</p>
-                  <p>Area: {{$tipo->nombre}}</p>
+                  <p>Area: {{$area->nombre}}</p>
 
 
                </li>

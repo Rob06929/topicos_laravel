@@ -80,6 +80,8 @@ Route::get('/actions/getDenuncias', [DenunciaController::class, 'index']);
 
 Route::post('/actions/getFiltroDenuncias', [DenunciaController::class, 'getFiltro']);
 Route::post('/getFiltroDenunciasMap', [DenunciaController::class, 'getFiltroMap']);
+Route::post('/cambiarEstadoDenuncia', [UsuarioController::class, 'cambiarEstadoDenuncia'])->name('cambiarEstadoDenuncia');
+
 
 
 Route::post('/actions/compararContenido', [DenunciaController::class, 'compararContenidoImagen']);

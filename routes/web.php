@@ -35,9 +35,13 @@ Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 Route::get('/inicio', [UsuarioController::class, 'inicio'])->name('inicio');
 
 Route::get('/lista_denuncias', [UsuarioController::class,'lista_denuncias'])->name('lista_denuncias');
+Route::get('/info_denuncia/{id}', [UsuarioController::class,'info_denuncia'])->name('info_denuncia');
+
+
 Route::get('/lista_areas', [UsuarioController::class,'lista_areas'])->name('lista_areas');
 
 Route::post('/registro_area', [AreaController::class,'store'])->name('registro_area');
+
 
 
 Route::get('verification', 'UserController@info_verification')->name('verification');
