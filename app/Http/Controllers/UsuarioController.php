@@ -92,8 +92,9 @@ class UsuarioController extends Controller
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
         $tipo=DenunciaTipo::find($funcionario->id_area);
-        //$denuncias=Denuncia::where('id',$funcionario->id_area)->get();
-        $denuncias=Denuncia::all();
+        $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image')
+                    ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
+                    ->get();
         return view('lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'denuncias'=>$denuncias]);
     }
 
