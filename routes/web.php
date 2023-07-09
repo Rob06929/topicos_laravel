@@ -5,8 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AreaController;
-
-
+use App\Http\Controllers\DenunciaTipoController;
+use App\Models\DenunciaTipo;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +41,13 @@ Route::get('/info_denuncia/{id}', [UsuarioController::class,'info_denuncia'])->n
 Route::get('/lista_areas', [UsuarioController::class,'lista_areas'])->name('lista_areas');
 
 Route::post('/registro_area', [AreaController::class,'store'])->name('registro_area');
+Route::post('/getArea', [AreaController::class,'getArea']);
 
+
+//types complaints
+Route::get('/type_complaint', [DenunciaTipoController::class,'index2'])->name('list_complaints');
+Route::post('/type_complaint/getTypes', [DenunciaTipoController::class,'getTypesComplaints']);
+Route::post('/type_complaint/store', [DenunciaTipoController::class,'store']);
 
 
 Route::get('verification', 'UserController@info_verification')->name('verification');

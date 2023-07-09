@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class DenunciaTipo extends Model
 {
     use HasFactory;
+    // protected
 }
