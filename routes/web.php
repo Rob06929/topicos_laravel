@@ -35,6 +35,8 @@ Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 Route::get('/inicio', [UsuarioController::class, 'inicio'])->name('inicio');
 
 Route::get('/lista_denuncias', [UsuarioController::class,'lista_denuncias'])->name('lista_denuncias');
+Route::post('/getFiltro', [UsuarioController::class,'getFiltro'])->name('getFiltro');
+
 Route::get('/info_denuncia/{id}', [UsuarioController::class,'info_denuncia'])->name('info_denuncia');
 
 

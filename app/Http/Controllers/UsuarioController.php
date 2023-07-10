@@ -114,13 +114,45 @@ class UsuarioController extends Controller
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
         $area=DenunciaTipo::find($funcionario->id_area);
+        $tipo=new DenunciaTipoController();
+        $estado=new DenunciaEstadoController();
         $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image','denuncia_estados.nombre as nombre_estado')
                     ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
                     ->leftJoin('denuncia_estados', 'denuncia_estados.id', 'denuncias.id_estado')
-                    ->latest()->paginate(10);
+                    ->latest()->paginate(8);
 
-        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'denuncias'=>$denuncias]);
+        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'denuncias'=>$denuncias,"tipos"=>$tipo->tiposXarea($area->id),"estados"=>$estado->index()]);
     }
+
+    function getFiltro(Request $request) {
+        $user=Auth::user();
+        $persona=Persona::find($user->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $area=DenunciaTipo::find($funcionario->id_area);
+        $tipo=new DenunciaTipoController();
+        $estado=new DenunciaEstadoController();
+        $data=Denuncia::select('denuncias.*', 'denuncia_estados.nombre as nombre_estado',
+                                'denuncia_tipos.nombre as nombre_tipo','denuncia_fotos.url as denuncia_image')
+                    ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
+                    ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
+                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo")
+                    ;
+        if ($request->opciones_tipo!='' && $request->opciones_tipo!='0') {
+            $data=$data->where("denuncias.id_tipo",$request->opciones_tipo);
+        }
+        if($request->opciones_estado!='' && $request->opciones_estado!='0'){
+            $data=$data->where("denuncias.id_estado",$request->opciones_estado);
+        }
+        if ($request->opciones_periodo!='' && $request->opciones_periodo!='0') {
+            $carbon = new \Carbon\Carbon();
+            $date = $carbon->now();
+            $end_date=$date->subDays($request->opciones_periodo);
+            $data=$data->where("denuncias.fecha_creacion", '>=',$end_date);
+        }
+        $denuncias=$data->latest()->paginate(8);
+        return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$user,'persona'=>$persona,'area'=>$area,'denuncias'=>$denuncias,"tipos"=>$tipo->tiposXarea($area->id),"estados"=>$estado->index()]);
+    }
+    
 
     function lista_areas() {
         $data=Auth::user();

@@ -17,6 +17,10 @@ class DenunciaTipoController extends Controller
         return DenunciaTipo::all();
     }
 
+    function tiposXarea($id_area) {
+        return DenunciaTipo::where('id_area',$id_area)->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

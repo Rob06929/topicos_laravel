@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('header')
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
 @endsection
 
@@ -72,12 +73,17 @@
 
 @section('script')
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhgSSTzKOzLw-maUH2Q6DxF_7EBAQkdU0&callback=initMap&v=weekly"
-    defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2iKcRjgOKH2Kzv1hqSCM18wan1a1cr68&callback=initMap&v=weekly"
+defer
 ></script>
+
 <script src="https://unpkg.com/@googlemaps/markerclusterer@2.0.2/dist/index.min.js"></script>
 
+
+
+
 <script>
+
 
 
 // Array de elementos para agregar a la lista
@@ -152,41 +158,15 @@ tipos.forEach(element => {
                     let pos={ lat: parseFloat(datos[i]["latitud"]), lng: parseFloat(datos[i]["longitud"]) };
                     const marker = new google.maps.Marker({
                         position: pos,
-                        map,
                         icon: icon,
                     });
         
                     markers.push(marker);
-                    
+
+                    console.log(markers)
             }
-
-            for (let i = 0; i < datos.length; i++) {
-                let pos={ lat: parseFloat(datos[i]["latitud"]), lng: parseFloat(datos[i]["longitud"]) };
-
-                const element = markers[i];
-                const infowindow = new google.maps.InfoWindow({
-                    content:`<div class="flex items-center justify-center flex-col p-4">
-                                <div><span class="text-lg text-blue-600">${datos[i]["titulo"]}</span> - <span class="text-lg text-red-600">${datos[i]["nombre_estado"]}</span></div>
-                                <div class="">descripcio de la denuncia</div>
-                                <div ><span class="text-sm text-gray-400">${datos[i]["fecha_creacion"]}</span> - <span class="text-sm text-red-600">${datos[i]["nombre_tipo"]}</span></div>
-                              </div>`,
-                    ariaLabel: datos[i]["titulo"],
-                });
-
-                console.log(datos)
-            
-
-                markers[i].addListener("click", () => {
-                    infowindow.open({
-                    anchor: markers[i],
-                    map,
-                    });
-                 });
-            };
-
-
-    const markerCluster = new markerClusterer.MarkerClusterer({ map, markers });
-
+            console.log(markers);
+    const markerCluster =new markerClusterer.MarkerClusterer({ map, markers });
 
     selectPeriodo.addEventListener('change', function() {
         markers.forEach(element => {
@@ -409,9 +389,7 @@ tipos.forEach(element => {
 
     }
 
-   
-
     window.initMap = initMap;
-</script>
+    </script>
     
 @endsection

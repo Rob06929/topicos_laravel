@@ -49,35 +49,38 @@
 
             miCheckbox.addEventListener('click', function() {
                 if(miCheckbox.checked) {
-                select.removeAttribute("disabled");
+                    select.removeAttribute("disabled");
+                }else{
+                    select.setAttribute("disabled", "disabled");
                 }
 
             });
 
         function actualizar_estado() {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const url = 'http://127.0.0.1:8000/api/cambiarEstadoDenuncia';
-        const data = {
-        id_denuncia:{!! $denuncia->id !!},
-        id_estado: estados.value
-        };
-
-        fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-        })
-        .then(datos => {
             select.setAttribute("disabled", "disabled");
             miCheckbox.checked=false;
-            console.log("estado cambiado");
-        })        
-        .catch(error => {
-            // Manejar errores
-            console.error('Error:', error);
-        });
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const url = 'http://127.0.0.1:8000/api/cambiarEstadoDenuncia';
+            const data = {
+            id_denuncia:{!! $denuncia->id !!},
+            id_estado: estados.value
+            };
+
+            fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+            })
+            .then(datos => {
+
+                console.log("estado cambiado");
+            })        
+            .catch(error => {
+                // Manejar errores
+                console.error('Error:', error);
+            });
             }
     </script>
 @endsection
