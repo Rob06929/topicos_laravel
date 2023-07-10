@@ -86,4 +86,9 @@ class AreaController extends Controller
     {
         //
     }
+    public function getArea(Request $request)
+    {
+        return Area::all();
+    }
+    
 }
