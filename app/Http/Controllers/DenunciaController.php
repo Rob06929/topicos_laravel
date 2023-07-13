@@ -89,6 +89,7 @@ class DenunciaController extends Controller
         if($message['imageCoincide']==false || $message['descripcionCoincide']==false){
             return $message;
         }
+        return $message;
         // fin de la comparacion con tipo de denuncia
         // return $request;
         if ($request->hasFile('image')) {
@@ -178,6 +179,7 @@ class DenunciaController extends Controller
             if ($this->containTrue($comparacion2['content'])) {
                 $lista["descripcion"]="true";
             }
+
            $lista["error"]="false";
         }
         return $lista;
