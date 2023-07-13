@@ -13,7 +13,7 @@ class ChatController extends Controller
   
         $data = Http::withHeaders([
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer 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',
+                    'Authorization' => 'Bearer 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',
                   ])
                   ->post("https://api.openai.com/v1/chat/completions", [
                     "model" => "gpt-3.5-turbo",
@@ -125,7 +125,7 @@ class ChatController extends Controller
     {
       $data = Http::withHeaders([
         'Content-Type' => 'application/json',
-        'Authorization' => 'Bearer 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',
+        'Authorization' => 'Bearer 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',
       ])
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
