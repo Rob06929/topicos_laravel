@@ -168,7 +168,7 @@ class DenunciaController extends Controller
             //$lista["res_img"]=$scan_img["caption_GPTS"];
             //$lista["res_img2"]=$scan_img->caption_GPTS;
             $inst2=new ChatController();
-            $comparacion1=$inst2->compararTextoTipo($scan_img['caption_GPTS']['text'],$request->type_name);
+            $comparacion1=$inst2->compararTextoTipo($scan_img['caption']['text'],$request->type_name);
             $lista["com_img"]=$comparacion1;
             $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->type_name);
             $lista["com_desc"]=$comparacion2;
