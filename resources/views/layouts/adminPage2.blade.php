@@ -56,10 +56,13 @@
                 style="border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;">
                 <ul class="pl-4 space-y-2 font-medium">
                     <li class="flex flex-col bg-white rounded-lg items-center">
-                        <div><img class="rounded-lg p-1" src="{{ $usuario->url_foto }}" alt=""></div>
-                        <p>Nombre: {{ $persona->nombre }}</p>
-                        <p>Email: {{ $usuario->email }}</p>
-                        <p>Area: {{ $area->nombre }}</p>
+                        <div><img class="rounded-lg p-1" width="200" height="100" src="{{ $usuario->url_foto }}" alt=""></div>
+                        <p>Nombre:</p>
+                        <p> {{ $persona->nombre }}</p>
+                        <p>Email:</p>
+                        <p> {{ $usuario->email }}</p>
+                        <p>Area:</p>
+                        <p> {{ $area->nombre }}</p>
 
 
                     </li>
@@ -88,9 +91,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('mapa_funcionario') }}"
                             class="flex items-center p-2 hover:text-gray-900 rounded-lg hover:bg-green-100 text-gray-100 group">
                             <span class="ml-3">Mapa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('lista_funcionarios') }}"
+                            class="flex items-center p-2 hover:text-gray-900 rounded-lg hover:bg-green-100 text-gray-100 group">
+                            <span class="ml-3">Funcionarios</span>
                         </a>
                     </li>
                 </ul>

@@ -60,42 +60,45 @@ class DenunciaController extends Controller
         // return $request;
         // return $request->hasFile('image');
         $message=[
-            'descripcionInapropiada'=> 1,//2= si la descripcion inapropiada, 3= descripcion no coincide con denuncia
-            'imageNoCoincide'=> 'false',//si la imagen no coincide se envia true
-            'messageDescripcion'=> 'Tiene contenido inapropiado*',
+            'descripcionInapropiada'=> false,//2= si la descripcion inapropiada, 3= descripcion no coincide con denuncia
+            'imageCoincide'=> false,//si la imagen no coincide se envia true
+            'descripcionCoincide'=> false,
             'msgImage'=> 'La imagen no coincide con el tipo de denuncia',
             'msgDescription'=> 'La descripcion no coincide con el tipo de denuncia',
         ];
         //validamos que la descripcion no tenga nada inapropiado
         $validation= $this->moderacionContenido($request);
-        if($validation['descripcion']=='false'){//si devuelve false, es por que tiene cosas indebidas
-            $message['descripcionInapropiada']=2;
+        $message["a"]=$validation;
+        if($validation['descripcion']=='true'){//si devuelve false, es por que tiene cosas indebidas
+            $message['descripcionInapropiada']=true;
             return $message;
         }
         // return $validation;
         //********************** realiza la comparacion con el tipo */
         $data=$this->compararContenidoImagen($request);
         // return $data;
-        if($data['imagen']=='false'){//true=tiene relacion tipo con imagen
-            $message['imageNoCoincide']='true';
+        $message["b"]=$data;
+
+        if($data['imagen']=='true'){//true=tiene relacion tipo con imagen
+            $message['imageCoincide']=true;
         }
-        if($data['descripcion']=='false'){//true=tiene relacion tipo con descripcion
-            $message['descripcionInapropiada']=3;
+        if($data['descripcion']=='true'){//true=tiene relacion tipo con descripcion
+            $message['descripcionCoincide']=true;
         }
-        if($message['imageNoCoincide']=='true' || $message['descripcionInapropiada']==3){
+        if($message['imageCoincide']==false || $message['descripcionCoincide']==false){
             return $message;
         }
         // fin de la comparacion con tipo de denuncia
         // return $request;
         if ($request->hasFile('image')) {
-            $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+            /*$extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_foto.' . $extension;
             // return $image_name;
             $path = $request->file('image')->storeAs(
                 'images',
                 $image_name,
                 's3'
-            );
+            );*/
             // return 'xd' ;
             $data=new Denuncia;
             $data->titulo=$request->title;
@@ -109,7 +112,7 @@ class DenunciaController extends Controller
             $data->save();
             // return 'xd' ;
             $saveImg=new DenunciaFotoController;
-            $data_img=$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
+            $data_img="https://ex-software1.s3.amazonaws.com/images/1686076077_foto.jpg";//$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
             return "exito";
             //echo $data_img->url;
         }
@@ -119,7 +122,7 @@ class DenunciaController extends Controller
     public function moderacionContenido(Request $request)
     {
         //$arrayStatus = array('status' => 'exito','titulo'=>'true','descripcion'=>'true','');
-        $arrayStatus = array('status' => 'exito','descripcion'=>'true');
+        $arrayStatus = array('status' => 'exito','descripcion'=>'false');
 
         $chat=new ChatController();
         /*$messageTit=$chat->chatModeracion($request->titulo);
@@ -127,8 +130,10 @@ class DenunciaController extends Controller
             $arrayStatus['titulo']="false";
         }*/
         $messageDes=$chat->chatModeracion($request->descripcion);
+        echo "llega aqui";
+
         if ($this->noModerado($messageDes)) {
-            $arrayStatus['descripcion']="false";
+            $arrayStatus['descripcion']="true";
         }
         return $arrayStatus;
     }
@@ -151,17 +156,17 @@ class DenunciaController extends Controller
         $lista=array("imagen"=>"false","descripcion"=>"false","error"=>"true");
 
         if ($request->hasFile('image')) {
-            $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+            /*$extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_ foto.' . $extension;
             $image = $request->file('image')->move('images/', $image_name);
             $inst1=new ApiImageController;
-            $scan_img=$inst1->analizeImage($image_name);
+            $scan_img=$inst1->analizeImage($image_name);*/
             // return $scan_img;
             //echo $scan_img;
             //$lista["res_img"]=$scan_img["caption_GPTS"];
             //$lista["res_img2"]=$scan_img->caption_GPTS;
             $inst2=new ChatController();
-            $comparacion1=$inst2->compararTextoTipo($scan_img,$request->type_name);
+            $comparacion1=$inst2->compararTextoTipo("la ruta de transporte esta en mal estado   ",$request->type_name);
             $lista["com_img"]=$comparacion1;
             $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->type_name);
             $lista["com_desc"]=$comparacion2;

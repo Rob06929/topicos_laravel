@@ -13,7 +13,7 @@ class ChatController extends Controller
   
         $data = Http::withHeaders([
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer '.env('OPENAI_API_KEY'),
+                    'Authorization' => 'Bearer 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',
                   ])
                   ->post("https://api.openai.com/v1/chat/completions", [
                     "model" => "gpt-3.5-turbo",
@@ -125,7 +125,7 @@ class ChatController extends Controller
     {
       $data = Http::withHeaders([
         'Content-Type' => 'application/json',
-        'Authorization' => 'Bearer '.env('OPENAI_API_KEY'),
+        'Authorization' => 'Bearer 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',
       ])
       ->post("https://api.openai.com/v1/chat/completions", [
         "model" => "gpt-3.5-turbo",
@@ -145,7 +145,7 @@ class ChatController extends Controller
         "stop" => ["11."],
       ])
       ->json();
-
+      var_dump($data);
       return $data['choices'][0]['message'];
     }
 }

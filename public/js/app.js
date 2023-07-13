@@ -5318,24 +5318,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -28214,14 +28196,12 @@ var render = function () {
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
         _c("div", { staticClass: "flex-1 m-4" }, [
           _c("div", { staticClass: "col-md-8" }, [
             _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "w-full text-center" }, [
                 _c("table", { staticClass: "table-auto w-full" }, [
-                  _vm._m(2),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -28241,10 +28221,6 @@ var render = function () {
                         _vm._v(" "),
                         _c("td", { staticClass: "border px-4 py-2" }, [
                           _vm._v(_vm._s(item.area_name)),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "border px-4 py-2" }, [
-                          _vm._v("eliminar"),
                         ]),
                       ])
                     }),
@@ -28273,56 +28249,6 @@ var staticRenderFns = [
         ]),
       ]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex-1 m-4" }, [
-      _c("div", { staticClass: "flex items-center space-x-4" }, [
-        _c("div", { staticClass: "flex-1" }, [
-          _c(
-            "label",
-            {
-              staticClass: "text-lg font-bold",
-              attrs: { for: "fecha-inicio" },
-            },
-            [_vm._v("Fecha de Inicio")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "w-full p-2 border border-gray-300",
-            attrs: { type: "date", id: "fecha-inicio" },
-          }),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1" }, [
-          _c(
-            "label",
-            { staticClass: "text-lg font-bold", attrs: { for: "fecha-fin" } },
-            [_vm._v("Fecha de Fin")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "w-full p-2 border border-gray-300",
-            attrs: { type: "date", id: "fecha-fin" },
-          }),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1" }, [
-          _c(
-            "label",
-            { staticClass: "text-lg font-bold", attrs: { for: "palabra" } },
-            [_vm._v("Busqueda por nombre")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "w-full p-2 border border-gray-300",
-            attrs: { type: "text", id: "palabra" },
-          }),
-        ]),
-      ]),
-    ])
   },
   function () {
     var _vm = this
@@ -28360,14 +28286,6 @@ var staticRenderFns = [
             staticClass: "px-4 py-2 font-bold border-2 bg-green-500 text-white",
           },
           [_vm._v("Area")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass: "px-4 py-2 font-bold border-2 bg-green-500 text-white",
-          },
-          [_vm._v("Opciones")]
         ),
       ]),
     ])

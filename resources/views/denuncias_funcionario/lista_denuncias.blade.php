@@ -1,4 +1,4 @@
-@extends('layouts.adminPage')
+@extends('layouts.adminPage2')
 
 @section('header')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css" rel="stylesheet" />
@@ -66,13 +66,13 @@
 
             @endforeach
         </div>
-
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            {{ $denuncias->links('pagination::tailwind') }}
+        <div class="row">
+            <div class="col-md-12">
+                {{ $denuncias->links('pagination::tailwind') }}
+            </div>
         </div>
     </div>
+
 @endsection
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>

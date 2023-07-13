@@ -1,4 +1,4 @@
-@extends('layouts.adminPage')
+@extends('layouts.adminPage2')
 
 @section('header')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css"  rel="stylesheet" />

@@ -26,4 +26,6 @@ class HomeController extends Controller
         $estado=new DenunciaEstadoController();
         return view('mapa',["login"=>true,"dashboard"=>true,"denuncias"=>$denuncias->index(),"tipos"=>$tipo->index(),"estados"=>$estado->index()]);
     }
+
+    
 }

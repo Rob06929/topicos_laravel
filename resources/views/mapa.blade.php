@@ -165,6 +165,29 @@ tipos.forEach(element => {
 
                     console.log(markers)
             }
+            for (let i = 0; i < datos.length; i++) {
+                let pos={ lat: parseFloat(datos[i]["latitud"]), lng: parseFloat(datos[i]["longitud"]) };
+
+                const element = markers[i];
+                const infowindow = new google.maps.InfoWindow({
+                    content:`<div class="flex items-center justify-center flex-col p-4">
+                                <div><span class="text-lg text-blue-600">${datos[i]["titulo"]}</span> - <span class="text-lg text-red-600">${datos[i]["nombre_estado"]}</span></div>
+                                <div class="">descripcio de la denuncia</div>
+                                <div ><span class="text-sm text-gray-400">${datos[i]["fecha_creacion"]}</span> - <span class="text-sm text-red-600">${datos[i]["nombre_tipo"]}</span></div>
+                              </div>`,
+                    ariaLabel: datos[i]["titulo"],
+                });
+
+                console.log(datos)
+            
+
+                markers[i].addListener("click", () => {
+                    infowindow.open({
+                    anchor: markers[i],
+                    map,
+                    });
+                 });
+            };
             console.log(markers);
     const markerCluster =new markerClusterer.MarkerClusterer({ map, markers });
 

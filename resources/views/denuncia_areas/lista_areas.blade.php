@@ -1,4 +1,4 @@
-@extends('layouts.adminPage')
+@extends('layouts.adminPage2')
 
 @section('header')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css" rel="stylesheet" />
@@ -9,38 +9,59 @@
 <div class="flex items-center justify-center flex-col h-5/6 p-4 border-2 border-gray-200 border-dashed rounded-lg mt-20">
 
 <!-- Modal toggle -->
-<button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class=" m-3 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-    Crear Area
-</button>
-
-
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-green-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Nombre de area
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Descripcion de area
-                </th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($areas as $area)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                   {{$area->nombre}}
-                </th>
-                <td class="px-6 py-4">
-                    {{$area->descripcion}}
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="w-full">
+    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class=" m-3 block text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+        Crear Area
+    </button>
 </div>
+
+
+<h1 class="text-center text-2xl font-bold p-3">Lista de Areas</h1>
+<table class="border-collapse border border-slate-100 w-4/5 text-sm text-left">
+    <thead class="bg-green-500 text text-white text-lg">
+        <tr>
+            <th scope="col" class="border-2 border-slate-100 p-3">
+                #
+            </th>
+            <th scope="col" class="border-2 border-slate-100 p-3">
+                Nombre de area
+            </th>
+            <th scope="col" class="border-2 border-slate-100 p-3">
+                Descripcion de area
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @php
+            $a=0;
+        @endphp
+
+        @foreach ($areas as $area)
+        <tr>
+            <td scope="row" class="border-2 border-slate-100 p-3">
+                {{$a}}
+             </td>
+            <td scope="row" class="border-2 border-slate-100 p-3">
+               {{$area->nombre}}
+            </td>
+            <td class="border-2 border-slate-100 p-3">
+                {{$area->descripcion}}
+            </td>
+        </tr>
+        @php
+            $a=$a+1;
+        @endphp
+        @endforeach
+    </tbody>
+  </table>
+
+  <div class="row m-3">
+    <div class="col-md-12">
+        {{ $areas->links('pagination::tailwind') }}
+    </div>
+  </div>
+
 
     
 </div>

@@ -135,8 +135,8 @@ class UsuarioController extends Controller
                                 'denuncia_tipos.nombre as nombre_tipo','denuncia_fotos.url as denuncia_image')
                     ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
                     ->join("denuncia_estados","denuncia_estados.id","denuncias.id_estado")
-                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo")
-                    ;
+                    ->join("denuncia_tipos","denuncia_tipos.id","denuncias.id_tipo");
+
         if ($request->opciones_tipo!='' && $request->opciones_tipo!='0') {
             $data=$data->where("denuncias.id_tipo",$request->opciones_tipo);
         }
@@ -158,11 +158,35 @@ class UsuarioController extends Controller
         $data=Auth::user();
         $persona=Persona::find($data->id_persona);
         $funcionario=Funcionario::where('id_persona',$persona->id)->first();
-        $area=DenunciaTipo::find($funcionario->id_area);
-        $areas=Area::all();
+        $area=Area::find($funcionario->id_area);
+       
+        $areas= DB::table('areas')->paginate(10);;
         return view('denuncia_areas.lista_areas',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'areas'=>$areas]);
     }
 
+    function lista_funcionarios() {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $area=Area::find($funcionario->id_area);
+        $areas=Area::all();
+        $funcionarios=Funcionario::select('funcionarios.*', 'personas.*','users.*','areas.nombre as nombre_area')
+            ->leftJoin('personas', 'personas.id', 'funcionarios.id_persona')
+            ->leftJoin('areas', 'areas.id', 'funcionarios.id_area')
+            ->join("users","users.id_persona","personas.id")->paginate(8);
+        return view('funcionarios.lista_funcionarios',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'funcionarios'=>$funcionarios,'areas'=>$areas]);
+        }
+
+        function mapa_funcionario() {
+            $data=Auth::user();
+            $persona=Persona::find($data->id_persona);
+            $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+            $area=Area::find($funcionario->id_area);
+            $denuncias= new DenunciaController();
+            $tipo=new DenunciaTipoController();
+            $estado=new DenunciaEstadoController();
+            return view('funcionarios.mapa_funcionario',['usuario'=>$data,'persona'=>$persona,'area'=>$area,"login"=>true,"dashboard"=>true,"denuncias"=>$denuncias->index(),"tipos"=>$tipo->index(),"estados"=>$estado->index()]);
+        }
 
 
     /**

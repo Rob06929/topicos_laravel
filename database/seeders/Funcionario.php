@@ -20,6 +20,11 @@ class Funcionario extends Seeder
             'id_area' => 1,
             'id_persona' => 2,
         ]);
+        DB::table('funcionarios')->insert([
+            'codigo' => 'AD34AS',
+            'id_area' => 2,
+            'id_persona' => 1,
+        ]);
 
     }
 }
