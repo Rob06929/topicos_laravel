@@ -76,6 +76,7 @@ class DenunciaController extends Controller
         // return $validation;
         //********************** realiza la comparacion con el tipo */
         $data=$this->compararContenidoImagen($request);
+    
         // return $data;
         $message["b"]=$data;
 
@@ -113,8 +114,8 @@ class DenunciaController extends Controller
             // return 'xd' ;
             $saveImg=new DenunciaFotoController;
             $data_img="https://ex-software1.s3.amazonaws.com/images/1686076077_foto.jpg";//$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
-            return "exito";
             //echo $data_img->url;
+            return 'exito';
         }
         return 'error';
     }
@@ -156,17 +157,18 @@ class DenunciaController extends Controller
         $lista=array("imagen"=>"false","descripcion"=>"false","error"=>"true");
 
         if ($request->hasFile('image')) {
-            /*$extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
+            $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_ foto.' . $extension;
             $image = $request->file('image')->move('images/', $image_name);
             $inst1=new ApiImageController;
-            $scan_img=$inst1->analizeImage($image_name);*/
+            $scan_img=$inst1->analizeImage($image_name);
+            $lista['contexto']=$scan_img['caption']['text'];
             // return $scan_img;
             //echo $scan_img;
             //$lista["res_img"]=$scan_img["caption_GPTS"];
             //$lista["res_img2"]=$scan_img->caption_GPTS;
             $inst2=new ChatController();
-            $comparacion1=$inst2->compararTextoTipo("la ruta de transporte esta en mal estado   ",$request->type_name);
+            $comparacion1=$inst2->compararTextoTipo($scan_img['caption_GPTS']['text'],$request->type_name);
             $lista["com_img"]=$comparacion1;
             $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->type_name);
             $lista["com_desc"]=$comparacion2;

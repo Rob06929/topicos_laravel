@@ -33,7 +33,7 @@ class ApiImageController extends Controller
             'input' =>$this->img_enc_base64("images/".$img),
         ];
         $result = $this->asticaAPI($this->asticaAPI_endpoint, $asticaAPI_payload, $this->asticaAPI_timeout);
-        return json_encode($result);
+        return $result;
     }
 
     public function asticaAPI($endpoint, $payload, $timeout = 15)
