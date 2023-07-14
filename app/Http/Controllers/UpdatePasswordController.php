@@ -44,7 +44,7 @@ class UpdatePasswordController extends Controller
         if ($data) {
             $fechaAntigua  = Carbon::parse($data->fecha);
             $cantidadDias = $fechaAntigua->diffInDays($fechaReciente);
-            echo $cantidadDias;
+            // echo $cantidadDias;
             if ($data1->periodo_password<=$cantidadDias) {
                 return json_encode(["excedeDias"=>"true"]);
             }else{
@@ -126,7 +126,7 @@ class UpdatePasswordController extends Controller
             $updatePassword=new UpdatePassword();
             
             //UpdatePassword::where("id_usuario",$data->id)->first();
-            echo $updatePassword;
+            // echo $updatePassword;
 
             $updatePassword->fecha = $fechaActual;
             $updatePassword->password = $contrasenaAnterior;
