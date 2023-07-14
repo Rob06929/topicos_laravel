@@ -102,6 +102,12 @@
                             <span class="ml-3">Funcionarios</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('settings') }}"
+                            class="flex items-center p-2 hover:text-gray-900 rounded-lg hover:bg-green-100 text-gray-100 group">
+                            <span class="ml-3">Settings</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </aside>

@@ -36,7 +36,7 @@
                 <button @click="guardar"
                     class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Registrar</button>
                 <button @click="closeModal"
-                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded ml-4">Cancelar</button>
+                    class="bg-red-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-4">Cancelar</button>
             </div>
         </div>
     </div>

@@ -315,8 +315,17 @@ class UsuarioController extends Controller
        
     }
 
+    function settings() {
+        $data=Auth::user();
+        $persona=Persona::find($data->id_persona);
+        $funcionario=Funcionario::where('id_persona',$persona->id)->first();
+        $area=Area::find($funcionario->id_area);
+        return view('update_periodos',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'funcionario'=>$funcionario]); 
+    }
 
-
+//Route::get('/', function () {
+//    return view('update_periodos');
+//})->name('form');
 
 
     public $data, $data1;

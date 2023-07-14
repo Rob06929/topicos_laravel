@@ -28145,7 +28145,7 @@ var render = function () {
                   "button",
                   {
                     staticClass:
-                      "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded ml-4",
+                      "bg-red-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-4",
                     on: { click: _vm.closeModal },
                   },
                   [_vm._v("Cancelar")]
