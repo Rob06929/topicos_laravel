@@ -56,6 +56,8 @@ Route::put('/update_funcionario/{id}', [FuncionarioController::class,'update'])-
 
 Route::get('/mapa_funcionario', [UsuarioController::class,'mapa_funcionario'])->name('mapa_funcionario');
 
+Route::get('/settings', [UsuarioController::class,'settings'])->name('settings');
+
 //types complaints
 Route::get('/type_complaint', [DenunciaTipoController::class,'index2'])->name('list_complaints');
 Route::post('/type_complaint/getTypes', [DenunciaTipoController::class,'getTypesComplaints']);

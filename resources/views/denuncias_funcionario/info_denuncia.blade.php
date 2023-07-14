@@ -34,6 +34,8 @@
             </div>
         </div>
 
+        <textarea id="message" rows="4" class="block p-2.5 w-full m-3 text-sm text-gray-900 bg-gray-50 invisible rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="escriba mensaje para el denunciante"></textarea>
+        
     </div>
 
 @endsection
@@ -42,6 +44,8 @@
     <script>
         console.log({!! $estado !!});
           let select = document.getElementById("estados");
+          var d = document.getElementById("message");
+
           select.value = {!! $estado->id !!};  
           select.setAttribute("disabled", "disabled");
 
@@ -50,8 +54,14 @@
             miCheckbox.addEventListener('click', function() {
                 if(miCheckbox.checked) {
                     select.removeAttribute("disabled");
+                    d.classList.add("visible");
+                    d.classList.remove("invisible");
+
+
                 }else{
                     select.setAttribute("disabled", "disabled");
+                    d.classList.add("invisible");
+                    d.classList.remove("visible");
                 }
 
             });
@@ -64,6 +74,7 @@
             const data = {
             id_denuncia:{!! $denuncia->id !!},
             id_estado: estados.value
+            message:t.value
             };
 
             fetch(url, {

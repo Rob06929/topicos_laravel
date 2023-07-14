@@ -249,7 +249,7 @@ class DenunciaController extends Controller
         return false;
     }
 
-    public function getFiltro(Request $request)
+     public function getFiltro(Request $request)
     {
 
         $data=Denuncia::select('denuncias.*', 'denuncia_estados.nombre as nombre_estado',
