@@ -66,3 +66,5 @@ Route::post('/type_complaint/store', [DenunciaTipoController::class,'store']);
 
 Route::get('verification', 'UserController@info_verification')->name('verification');
 
+Route::post('/store-token', [UsuarioController::class, 'storeToken'])->name('store.token');
+Route::post('/send-web-notification', [UsuarioController::class, 'sendWebNotification'])->name('send.web-notification');

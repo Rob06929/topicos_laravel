@@ -20,6 +20,7 @@ class CreateDenunciasTable extends Migration
             $table->date("fecha_creacion");
             $table->float("latitud");
             $table->float("longitud");
+            $table->string("observacion")->nullable();
             $table->integer("id_tipo");
             $table->integer("id_usuario");
             $table->integer("id_estado");

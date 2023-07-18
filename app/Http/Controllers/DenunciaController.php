@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 class DenunciaController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -108,6 +110,7 @@ class DenunciaController extends Controller
             $data->fecha_creacion=Carbon::now();
             $data->latitud=$request->latitud;
             $data->longitud=$request->longitud;
+            $data->observacion="";
             $data->id_tipo=$request->type_id;
             $data->id_estado=1;
             $data->id_usuario=$request->id_usuario;
@@ -163,6 +166,7 @@ class DenunciaController extends Controller
             $image = $request->file('image')->move('images/', $image_name);
             $inst1=new ApiImageController;
             $scan_img=$inst1->analizeImage($image_name);
+            return $scan_img;
             $lista['contexto']=$scan_img['caption']['text'];
             // return $scan_img;
             //echo $scan_img;

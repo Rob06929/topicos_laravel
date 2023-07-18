@@ -16,6 +16,7 @@ class CreateVecinosTable extends Migration
         Schema::create('vecinos', function (Blueprint $table) {
             $table->id();
             $table->integer("id_persona");
+            $table->string('device_key')->nullable();
             $table->timestamps();
         });
     }
