@@ -10,6 +10,8 @@ use App\Http\Controllers\EmailConfirmationController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ApiImageController;
 use App\Http\Controllers\DenunciaController;
+use App\Http\Controllers\VecinoController;
+
 
 
 /*
@@ -90,6 +92,8 @@ Route::post('/actions/guardarDenuncia', [DenunciaController::class, 'store']);
 
 Route::get('/actions/cancelarDenuncia/{id}', [DenunciaController::class, 'cancelarDenuncia']);
 
+Route::post('/actions/saveToken', [VecinoController::class, 'saveToken']);
+Route::get('/actions/getToken/{id}', [VecinoController::class, 'getToken']);
 
 
 

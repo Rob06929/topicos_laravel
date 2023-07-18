@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ApiImageController extends Controller
 {
-    public $asticaAPI_key = 'CB2792D3-6F8B-474C-8CD8-FBCDAD3C765771C6FA6F-5C44-458E-900A-54F867712C4D'; //visit https://astica.org
+    public $asticaAPI_key = 'BC12F9AC-FBBB-4067-BACF-6804E692F1DF58433ABE-862E-46CB-9659-A2C125F59E1F'; //visit https://astica.org
     public $asticaAPI_timeout = 60; // seconds  Using "gpt" or "gpt_detailed" will increase response time.
 
     public $asticaAPI_endpoint = 'https://www.astica.org:9141/vision/describe';
