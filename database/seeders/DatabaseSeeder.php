@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DenunciaEstadoSeeder::class);
         $this->call(DenunciaFotoSeeder::class);
         $this->call(DenunciaTipoSeeder::class);
-        $this->call(DenunciaSeeder::class);
+        // $this->call(DenunciaSeeder::class);
         $this->call(Funcionario::class);
         $this->call(DenunciaAreaSeeder::class);
 
