@@ -274,7 +274,8 @@ class DenunciaController extends Controller
         }
         $data=$data->get();
         foreach ($data as $value) {
-            $value->url=DenunciaFotoController::getFoto($value->id)->url;
+            $value->url=(DenunciaFotoController::getFoto($value->id)==''? '' : DenunciaFotoController::getFoto($value->id)->url);
+            // return 'good';
         }
         return $data;
     }
