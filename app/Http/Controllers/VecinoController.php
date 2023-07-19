@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Vecino;
 use Illuminate\Http\Request;
 
 class VecinoController extends Controller
 {
     function saveToken(Request $request) {
-        $data=Vecino::where('id',$request->id);
+        $data=User::where('id',$request->id)->first();
         $data->device_key=$request->token;
         $data->save();
         return "exito";

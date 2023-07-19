@@ -91,7 +91,7 @@ class DenunciaController extends Controller
         if($message['imageCoincide']==false || $message['descripcionCoincide']==false){
             return $message;
         }
-        return $message;
+        // return $message;
         // fin de la comparacion con tipo de denuncia
         // return $request;
         if ($request->hasFile('image')) {
@@ -119,9 +119,10 @@ class DenunciaController extends Controller
             $saveImg=new DenunciaFotoController;
             $data_img="https://ex-software1.s3.amazonaws.com/images/1686076077_foto.jpg";//$saveImg->store("https://ex-software1.s3.amazonaws.com/".$path,$data->id);
             //echo $data_img->url;
-            return 'exito';
+            // return 'exito';
         }
-        return 'error';
+        // return 'error';
+        return $message;
     }
 
     public function moderacionContenido(Request $request)
@@ -164,22 +165,22 @@ class DenunciaController extends Controller
             $extension  = request()->file('image')->getClientOriginalExtension(); //This is to get the extension of the image file just uploaded
             $image_name = time() .'_ foto.' . $extension;
             $image = $request->file('image')->move('images/', $image_name);
-            $inst1=new ApiImageController;
-            $scan_img=$inst1->analizeImage($image_name);
-            return $scan_img;
-            $lista['contexto']=$scan_img['caption']['text'];
+            // $inst1=new ApiImageController;
+            // $scan_img=$inst1->analizeImage($image_name);
+            // return $scan_img;
+            // $lista['contexto']=$scan_img['caption']['text'];
             // return $scan_img;
             //echo $scan_img;
             //$lista["res_img"]=$scan_img["caption_GPTS"];
             //$lista["res_img2"]=$scan_img->caption_GPTS;
             $inst2=new ChatController();
-            $comparacion1=$inst2->compararTextoTipo($scan_img['caption']['text'],$request->type_name);
-            $lista["com_img"]=$comparacion1;
+            // $comparacion1=$inst2->compararTextoTipo($scan_img['caption']['text'],$request->type_name);
+            // $lista["com_img"]=$comparacion1;
             $comparacion2=$inst2->compararTextoTipo($request->descripcion,$request->type_name);
             $lista["com_desc"]=$comparacion2;
-            if ($this->containTrue($comparacion1['content'])) {
+            // if ($this->containTrue($comparacion1['content'])) {
                 $lista["imagen"]="true";
-            }
+            // }
             if ($this->containTrue($comparacion2['content'])) {
                 $lista["descripcion"]="true";
             }
