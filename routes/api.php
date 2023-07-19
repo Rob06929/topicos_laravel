@@ -95,6 +95,10 @@ Route::get('/actions/cancelarDenuncia/{id}', [DenunciaController::class, 'cancel
 Route::post('/actions/saveToken', [VecinoController::class, 'saveToken']);
 Route::get('/actions/getToken/{id}', [VecinoController::class, 'getToken']);
 
+Route::get('/actions/getToken/{id}', [VecinoController::class, 'getToken']);
+
+Route::get('/actions/getToken/{id}', [VecinoController::class, 'getToken']);
+
 
 
 

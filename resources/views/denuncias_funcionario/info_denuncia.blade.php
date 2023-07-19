@@ -39,7 +39,7 @@
         </div>
 
         <textarea id="message" rows="4" class="block p-2.5 w-full m-3 text-sm text-gray-900 bg-gray-50 invisible rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 h-fit" placeholder="escriba mensaje para el denunciante"></textarea>
-        
+        <input hidden id="id_user" type="text" value="{{$usuario_denuncia->id}}">
     </div>
 
     <button hidden id="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="initFirebaseMessagingRegistration()" class="btn btn-danger btn-xs btn-flat">Allow for Notification</button>
@@ -72,6 +72,8 @@
           let select = document.getElementById("estados");
           var d = document.getElementById("message");
 
+          var id_user = document.getElementById("id_user");
+
           select.value = {!! $estado->id !!};  
           select.setAttribute("disabled", "disabled");
 
@@ -103,6 +105,7 @@
             const data = {
             id_denuncia:{!! $denuncia->id !!},
             id_estado: estados.value,
+            id_user:id_user.value,
             message:d.value
             };
 
@@ -185,11 +188,11 @@
     var map;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 43.5293101, lng: -5.6773233},
+          center: {lat: {!! $denuncia->latitud !!}, lng: {!! $denuncia->longitud !!}},
           zoom: 13
         });
         var marker = new google.maps.Marker({
-          position: {lat: 43.542194, lng: -5.676875},
+          position: {lat: {!! $denuncia->latitud !!}, lng: {!! $denuncia->longitud !!}},
           map: map,
 	  title: 'Acuario de Gijón'
         });

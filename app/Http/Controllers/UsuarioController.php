@@ -16,6 +16,8 @@ use App\Models\UpdatePassword;
 use App\Models\Usuario;
 use App\Models\Funcionario;
 use App\Models\Denuncia;
+use App\Models\Notificacion;
+
 use App\Models\DenunciaTipo;
 use App\Models\DenunciaEstado;
 use App\Models\Area;
@@ -46,13 +48,56 @@ class UsuarioController extends Controller
         $url = 'https://fcm.googleapis.com/fcm/send';
         $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
           
-        $serverKey = 'AAAAqCHzXSk:APA91bHatb4qMLDE8Sgr28uf_WhSl9YR11eoVyY3NSVB-jgzaudG-iPR73UeOwU76d6JsD41pwQdSXwGPZkGFGIre4QHhSZVfCcPoqTKp0CHo7wswL1N8dBzM0AU3sIKjkc_tFVLebJe';
+        $serverKey = 'AAAA2M7P95E:APA91bGraw6kgEwZRXwuDALixIhc-vvTuMdCPswbaWfu2IJjbdF2puOlUE3YAHEZNQEv6wcXEKxZO-wWyDBtAjcGZsmFH5vHByu0KhPKsSb65uLvYS9i-xEDX3W3KqY-H85p2cJQOCYD';
   
         $data = [
             "registration_ids" => $FcmToken,
             "notification" => [
-                "title" => $request->title,
-                "body" => $request->body,  
+                "title" =>"Notificacion de denuncia",
+                "body" => "Su denuncia fue respondida.",  
+            ]
+        ];
+        $encodedData = json_encode($data);
+    
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+    
+        $ch = curl_init();
+      
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }        
+        // Close connection
+        curl_close($ch);
+        // FCM response
+        return $result;
+    }
+
+    function sendWebNotificationWithToken($token) {
+        return "aaaaaa";
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $FcmToken = $token;
+          
+        $serverKey = 'AAAA2M7P95E:APA91bGraw6kgEwZRXwuDALixIhc-vvTuMdCPswbaWfu2IJjbdF2puOlUE3YAHEZNQEv6wcXEKxZO-wWyDBtAjcGZsmFH5vHByu0KhPKsSb65uLvYS9i-xEDX3W3KqY-H85p2cJQOCYD';
+  
+        $data = [
+            "registration_ids" => "dIITYuhfSgiafq2aCq9Fjp:APA91bFOCqD5oI2IMDQK48TT-dVtTBTUmYXsylyPJBTs0_fEmgbD20gNe6s3fWuoaKdOvDLSiyeHjGxt-X4vd9ynrcp7FZAc2HIfbzNfmExyVB_pkDVXmmXNJ-TdqzYBxPQpEnBVReW2",
+            "notification" => [
+                "title" =>"Notificacion de denuncia",
+                "body" => "Su denuncia fue respondida.",    
             ]
         ];
         $encodedData = json_encode($data);
@@ -146,16 +191,38 @@ class UsuarioController extends Controller
         $tipo=DenunciaTipo::find($denuncia->id_tipo);
         $area=Area::find($tipo->id_area);
         $estado=DenunciaEstado::find($denuncia->id_estado);
+        //$user_persona=User::find($denuncia->id_usuario);
+
+        $usuario_denuncia=User::find($denuncia->id_usuario);
+
+        //$persona_vecino=Persona::find($user_persona->id_persona);
         
+
+        //$vecino=Vecino::where('id_persona',$persona_vecino->id)->first();
+
         $estados=DenunciaEstado::all();
         $foto=DenunciaFoto::where('id_denuncia',$denuncia->id)->first();
-        return view('denuncias_funcionario.info_denuncia',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'area'=>$area,'denuncia'=>$denuncia, 'estado'=>$estado, 'estados'=>$estados,'foto'=>$foto]); 
+        return view('denuncias_funcionario.info_denuncia',['usuario'=>$data,'persona'=>$persona,'tipo'=>$tipo,'area'=>$area,'denuncia'=>$denuncia, 'estado'=>$estado, 'estados'=>$estados,'foto'=>$foto,'usuario_denuncia'=>$usuario_denuncia]); 
     }
 
     function cambiarEstadoDenuncia(Request $request) {
+        
+
         $data=Denuncia::find($request->id_denuncia);
         $data->id_estado=$request->id_estado;
         $data->save();
+
+        $noti=new Notificacion;
+        $noti->titulo=$data->titulo;
+        $noti->descripcion=$request->message;
+        $noti->id_denuncia=$data->id;
+        $noti->fecha_registro=$date = Carbon::now();
+        $noti->save();
+
+        $user=User::find($request->id_user)->first();
+
+        //sendWebNotificationWithToken($user->device_key);
+
         return "exito";
     }
     function lista_denuncias() {
@@ -167,7 +234,7 @@ class UsuarioController extends Controller
         $estado=new DenunciaEstadoController();
         $denuncias=Denuncia::select('denuncias.*', 'denuncia_fotos.url as denuncia_image','denuncia_estados.nombre as nombre_estado')
                     ->leftJoin('denuncia_fotos', 'denuncia_fotos.id_denuncia', 'denuncias.id')
-                    ->leftJoin('denuncia_estados', 'denuncia_estados.id', 'denuncias.id_estado')
+                    ->leftJoin('denuncia_estados', 'denuncia_estados.id','denuncias.id_estado')
                     ->latest()->paginate(8);
 
         return view('denuncias_funcionario.lista_Denuncias',['usuario'=>$data,'persona'=>$persona,'area'=>$area,'denuncias'=>$denuncias,"tipos"=>$tipo->tiposXarea($area->id),"estados"=>$estado->index()]);
