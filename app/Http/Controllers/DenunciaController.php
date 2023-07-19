@@ -136,7 +136,7 @@ class DenunciaController extends Controller
             $arrayStatus['titulo']="false";
         }*/
         $messageDes=$chat->chatModeracion($request->descripcion);
-        echo "llega aqui";
+        // echo "llega aqui";
 
         if ($this->noModerado($messageDes)) {
             $arrayStatus['descripcion']="true";

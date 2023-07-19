@@ -458,7 +458,7 @@ class UsuarioController extends Controller
         $data->name = $request->nombre_usuario;
         $data->email = $request->email;
         $data->estado_confirmacion = "false";
-        $data->password = bcrypt($request->password);
+        $data->password = ($request->password);
         $data->url_foto = $request->url_foto;
         $data->id_persona = $data1->id;
         $data->save();
